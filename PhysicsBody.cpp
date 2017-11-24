@@ -89,8 +89,8 @@ std::unordered_map<StatusEffect::DebuffEffect, StatusEffect> PhysicsBody::getDeb
     return debuffEffectsReceived;
 }
 
-SDL_Rect * PhysicsBody::getBounds() {
-    return &hitbox;
+SDL_Rect PhysicsBody::getBounds() {
+    return hitbox;
 }
 
 int PhysicsBody::w() { return hitbox.w; }

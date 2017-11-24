@@ -25,7 +25,7 @@ Game::Game(SDL_Renderer * _renderer, Size windowSize) {
     player = new Player(renderer, &constantTimer,
         {(camera.w - Character::CHAR_W) / 2, (camera.h - Character::CHAR_H) / 2});
 
-    enemy = new Enemy(renderer, &constantTimer, {900, 450, 60, 90});
+    enemy = new Enemy(renderer, &constantTimer, {900, 450, 60, 90}, {Character::CHAR_W, Character::CHAR_H});
 
     origin = {0,0};
 
@@ -194,7 +194,8 @@ void Game::tick() {
     Attack skill = player->getSkill();
 
     if(!skill.damageFrames.empty() && skill.damageFrames.at(0).damage > 0) {
-        if(testCollision(skill.damageFrames.at(0).hitbox, *enemy->getBounds())) {
+        SDL_Rect bounds = enemy->getBounds();
+        if(testCollision(skill.damageFrames.at(0).hitbox, bounds)) {
             for(auto &effect : skill.buffEffectsApplied) {
                 if(effect.buff == StatusEffect::BLOODLUST){
                     effect.startDurationTicks = constantTimer.getTicks();
@@ -271,7 +272,7 @@ void Game::tick() {
 
         //restart the frame timer after everything has been moved
     loopTimer.start();
-    
+
     render();
 }
 
@@ -455,58 +456,62 @@ void Game::render() {
     SDL_RenderPresent(renderer);
 }
 
+void Game::updateCollisionGrid() {
+    //SDL_Point startChunk = chunkLocation();
+}
+
 bool Game:: canMove(Direction direction, Character * character, bool isPlayer) {
     double zipCorrection = 0.25;
-    SDL_Rect * hitbox = character->getBounds();
-    SDL_Point startTile = absoluteTileLocation({hitbox->x, hitbox->y});
+    SDL_Rect hitbox = character->getBounds();
+    SDL_Point startTile = absoluteTileLocation({hitbox.x, hitbox.y});
 
     for(int i = startTile.x; i < startTile.x + 2 && (i / Chunk::CHUNK_WIDTH) < chunks.size(); i++) {
         for(int j = startTile.y; j < startTile.y + 2  &&
             (j / Chunk::CHUNK_HEIGHT) < chunks.at(i / Chunk::CHUNK_WIDTH).size(); j++) {
             Tile tile = chunks.at(i / Chunk::CHUNK_WIDTH).at(j / Chunk::CHUNK_HEIGHT)
                 .getTile(i % Chunk::CHUNK_WIDTH, j % Chunk::CHUNK_HEIGHT);
-            if(testCollision(*hitbox, tile.getBounds())) {
+            if(testCollision(hitbox, tile.getBounds())) {
                 int dx = 0, dy = 0;
                 bool collisionFound = false;
                 switch(direction) {
                     case LEFT:
                         if(Tile::rightWalls.count(tile.getType()) == 0) break;
                         if(tile.getBounds().x + Tile::TILE_WIDTH
-                            - (Tile::TILE_WIDTH * zipCorrection) > hitbox->x) break;
-                        if(tile.getBounds().y + 1 >= hitbox->y + hitbox->h ||
-                            tile.getBounds(). y + tile.getBounds().w - 1 <= hitbox->y) break;
+                            - (Tile::TILE_WIDTH * zipCorrection) > hitbox.x) break;
+                        if(tile.getBounds().y + 1 >= hitbox.y + hitbox.h ||
+                            tile.getBounds(). y + tile.getBounds().w - 1 <= hitbox.y) break;
 
-                        dx = hitbox->x - (tile.getBounds().x + Tile::TILE_WIDTH - 1);
+                        dx = hitbox.x - (tile.getBounds().x + Tile::TILE_WIDTH - 1);
                         collisionFound = true;
                         break;
                     case RIGHT:
                         if(Tile::leftWalls.count(tile.getType()) == 0) break;
                         if(tile.getBounds().x + (Tile::TILE_WIDTH * zipCorrection)
-                            < hitbox->x + hitbox->w) break;
-                        if(tile.getBounds().y + 1 >= hitbox->y + hitbox->h ||
-                            tile.getBounds(). y + tile.getBounds().w - 1 <= hitbox->y) break;
+                            < hitbox.x + hitbox.w) break;
+                        if(tile.getBounds().y + 1 >= hitbox.y + hitbox.h ||
+                            tile.getBounds(). y + tile.getBounds().w - 1 <= hitbox.y) break;
 
-                        dx = (hitbox->x + hitbox->w) - tile.getBounds().x;
+                        dx = (hitbox.x + hitbox.w) - tile.getBounds().x;
                         collisionFound = true;
                         break;
                     case UP:
                         if(Tile::bottomWalls.count(tile.getType()) == 0) break;
                         if(tile.getBounds().y + Tile::TILE_HEIGHT
-                            - (Tile::TILE_HEIGHT * zipCorrection) > hitbox->y) break;
-                        if(tile.getBounds().x + tile.getBounds().w - 1 <= hitbox->x ||
-                            tile.getBounds().x + 1 >= hitbox->x + hitbox->w) break;
+                            - (Tile::TILE_HEIGHT * zipCorrection) > hitbox.y) break;
+                        if(tile.getBounds().x + tile.getBounds().w - 1 <= hitbox.x ||
+                            tile.getBounds().x + 1 >= hitbox.x + hitbox.w) break;
 
-                        dy = hitbox->y - (tile.getBounds().y + Tile::TILE_HEIGHT);
+                        dy = hitbox.y - (tile.getBounds().y + Tile::TILE_HEIGHT);
                         collisionFound = true;
                         break;
                     case DOWN:
                         if(Tile::topWalls.count(tile.getType()) == 0) break;
                         if(tile.getBounds().y + (Tile::TILE_HEIGHT * zipCorrection)
-                            < hitbox->y + hitbox->h) break;
-                        if(tile.getBounds().x + tile.getBounds().w - 1 <= hitbox->x ||
-                            tile.getBounds().x + 1 >= hitbox->x + hitbox->w) break;
+                            < hitbox.y + hitbox.h) break;
+                        if(tile.getBounds().x + tile.getBounds().w - 1 <= hitbox.x ||
+                            tile.getBounds().x + 1 >= hitbox.x + hitbox.w) break;
 
-                        dy = (hitbox->y + hitbox->h) - tile.getBounds().y;
+                        dy = (hitbox.y + hitbox.h) - tile.getBounds().y;
                         collisionFound = true;
                         break;
                     default:
@@ -517,8 +522,9 @@ bool Game:: canMove(Direction direction, Character * character, bool isPlayer) {
                 if(collisionFound) {
                     if(isPlayer) translateChunks(dx, dy);
                     else {
-                        hitbox->x -= dx;
-                        hitbox->y -= dy;
+                        //hitbox->x -= dx;
+                        //hitbox->y -= dy;
+                        character->translate(-dx, -dy);
                     }
                     return false;
                 }
@@ -606,9 +612,9 @@ void Game::translateChunks(int dx, int dy) {
     origin.y += dy;
 
     if(std::abs(enemy->getVelocity().dx()) < 1) {
-        enemy->getBounds()->x += dx;
+        enemy->translate(dx, 0);
     }
-    enemy->getBounds()->y += dy;
+    enemy->translate(0, dy);
 }
 
 SDL_Point Game::chunkLocation(SDL_Point point) {

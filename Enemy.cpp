@@ -8,8 +8,8 @@
 
 #include "Enemy.hpp"
 
-Enemy::Enemy(SDL_Renderer *renderer, Timer *_timer, SDL_Rect _hitbox) :
-    Character(renderer, _timer, {_hitbox.x, _hitbox.y}) {
+Enemy::Enemy(SDL_Renderer *renderer, Timer *_timer, SDL_Rect _hitbox, Size size) :
+    Character(renderer, _timer, {_hitbox.x, _hitbox.y}, size) {
 
     timer = _timer;
     //physicsbody = PhysicsBody(_hitbox, _timer);
@@ -33,7 +33,8 @@ Enemy::~Enemy() {
 
 void Enemy::render(SDL_Renderer *renderer) {
     Character::render(renderer);
-    SDL_RenderDrawRect(renderer, Character::getBounds());
+    SDL_Rect bounds = Character::getBounds();
+    SDL_RenderDrawRect(renderer, &bounds);
 }
 
 /*void Enemy::move() { physicsbody.move(); }

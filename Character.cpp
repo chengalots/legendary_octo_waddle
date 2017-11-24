@@ -18,7 +18,7 @@ const int Character::CHAIN_TIME_LIMIT = 100;
 //const int Character::NUM_OF_TEXTURES = 13;
 //const int Character::SKILLSET_SIZE = 9;
 
-Character::Character(SDL_Renderer * renderer, Timer * newTimer, SDL_Point spawnPoint) {
+Character::Character(SDL_Renderer * renderer, Timer * newTimer, SDL_Point spawnPoint, Size size) {
 
     timer = newTimer;
 
@@ -41,7 +41,7 @@ Character::Character(SDL_Renderer * renderer, Timer * newTimer, SDL_Point spawnP
     hasUnitCollision = true;
     canMoveUp = canMoveDown = canMoveLeft = canMoveRight = false;
     previousFrame = -1;
-    physicsbody = PhysicsBody({spawnPoint.x, spawnPoint.y, CHAR_W, CHAR_H}, newTimer);
+    physicsbody = PhysicsBody({spawnPoint.x, spawnPoint.y, size.w, size.h}, newTimer);
     physicsbody.setDirection(RIGHT);
     hp = 100;
     jumpCap = 1;
@@ -290,7 +290,11 @@ void Character::setTimer(Timer *newTimer) {
     physicsbody.setTimer(newTimer);
 }
 
-SDL_Rect * Character::getBounds() { return physicsbody.getBounds(); }
+SDL_Rect Character::getBounds() { return physicsbody.getBounds(); }
+
+void Character::translate(int dx, int dy) { physicsbody.translate(dx, dy); }
+
+SDL_Point Character::location() { return physicsbody.location(); }
 
 std::vector<Attack> * Character::getSkillSet() { return &skills; }
 

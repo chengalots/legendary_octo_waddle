@@ -33,6 +33,7 @@ public:
 private:
     void processKeyPresses();
     void render();
+    void updateCollisionGrid();
 
         //check if a hitbox can continue to move in specified direction
     bool canMove(Direction direction, Character * character, bool isPlayer);

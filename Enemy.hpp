@@ -16,7 +16,7 @@
 
 class Enemy : public Character{
 public:
-    Enemy(SDL_Renderer *renderer, Timer *timer, SDL_Rect _hitbox);
+    Enemy(SDL_Renderer *renderer, Timer *timer, SDL_Rect _hitbox, Size size);
     ~Enemy();
 
     void render(SDL_Renderer *renderer);

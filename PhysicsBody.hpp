@@ -31,7 +31,7 @@ public:
     bool hasDebuffEffect(StatusEffect::DebuffEffect type);
     std::unordered_map<StatusEffect::DebuffEffect, StatusEffect> getDebuffEffectsReceived();
 
-    SDL_Rect * getBounds();
+    SDL_Rect getBounds();
     int w();
     int h();
     SDL_Point location();

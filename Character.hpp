@@ -52,7 +52,7 @@ public:
     bool hasUnitCollision;
     bool canMoveUp, canMoveDown, canMoveLeft, canMoveRight;
 
-    Character(SDL_Renderer * renderer, Timer * newTimer, SDL_Point spawnPoint);
+    Character(SDL_Renderer * renderer, Timer * newTimer, SDL_Point spawnPoint, Size size);
     ~Character();
     void render(SDL_Renderer * renderer);
 
@@ -62,7 +62,9 @@ public:
     Attack getSkill();
 
     void setTimer(Timer * newTimer);
-    SDL_Rect * getBounds();
+    SDL_Rect getBounds();
+    void translate(int dx, int dy);
+    SDL_Point location();
     std::vector<Attack> * getSkillSet();
         //return the direction the player is facing
     Direction getDirection();
