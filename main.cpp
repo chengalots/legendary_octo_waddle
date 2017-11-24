@@ -16,7 +16,7 @@ void quitSDL2() {
     SDL_Quit();
 }
 
-void initSDL2() {
+int initSDL2() {
     if(SDL_Init(SDL_INIT_VIDEO) < 0) {
         std::cerr << "SDL could not init with SDL_INIT_VIDEO. SDL error: " << SDL_GetError() << std::endl;
         return EXIT_FAILURE;
@@ -39,7 +39,7 @@ int main(int argc, const char * argv[]) {
     Size windowSize = {1280, 720};
 
     //init and setup, if something fails, free existing resources and quit the program
-    initSDL2();
+    if(initSDL2() == EXIT_FAILURE) return EXIT_FAILURE;
 
     SDL_Window * window = SDL_CreateWindow("Potato 2", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         windowSize.w, windowSize.h, SDL_WINDOW_SHOWN);

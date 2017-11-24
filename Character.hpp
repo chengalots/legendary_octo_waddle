@@ -92,6 +92,8 @@ public:
     bool hasDebuffEffect(StatusEffect::DebuffEffect type);
     std::unordered_map<StatusEffect::DebuffEffect, StatusEffect> getDebuffEffectsReceived();
 
+    SDL_Point getPreviousChunk();
+    SDL_Point setPreviousChunk(SDL_Point p);
 private:
     //static const int NUM_OF_TEXTURES;
     //static const int SKILLSET_SIZE;
@@ -113,6 +115,8 @@ private:
     int hp;
         //keeps track of number of jumps made
     int jumpCounter;
+
+    SDL_Point previousChunk;
 };
 
 #endif

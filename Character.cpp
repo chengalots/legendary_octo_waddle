@@ -32,7 +32,9 @@ Character::Character(SDL_Renderer * renderer, Timer * newTimer, SDL_Point spawnP
     jumpCap = 1;
     jumpCounter = 0;
 
-    std::srand(SDL_GetTicks());
+    previousChunk = {0, 0};
+
+    //std::srand(SDL_GetTicks());
 }
 
 Character::~Character() {
@@ -312,3 +314,11 @@ bool Character::hasDebuffEffect(StatusEffect::DebuffEffect type) { return physic
 
 std::unordered_map<StatusEffect::DebuffEffect, StatusEffect> Character::getDebuffEffectsReceived()
 { return physicsbody.getDebuffEffectsReceived(); }
+
+SDL_Point Character::getPreviousChunk() {
+    return previousChunk;
+}
+
+SDL_Point Character::setPreviousChunk(SDL_Point p) {
+    previousChunk = p;
+}
