@@ -9,88 +9,88 @@
 #include "PhysicsBody.hpp"
 
 PhysicsBody::PhysicsBody() {
-	timer = nullptr;
-	direction = NONE;
+    timer = nullptr;
+    direction = NONE;
 }
 
 PhysicsBody::PhysicsBody(SDL_Rect bounds, Timer * newTimer) {
-	hitbox = bounds;
-	timer = newTimer;
+    hitbox = bounds;
+    timer = newTimer;
 }
 
 void PhysicsBody::setTimer(Timer * newTimer) {
-	timer = newTimer;
+    timer = newTimer;
 }
 
 void PhysicsBody::receiveStatusEffect(StatusEffect effect) {
-	if(effect.buff != StatusEffect::NO_BUFF) {
-		switch(effect.buff) {
-			case StatusEffect::BLOODLUST:
-				if(buffEffectsReceived.count(StatusEffect::BLOODLUST) != 0) {
-					if(buffEffectsReceived.at(StatusEffect::BLOODLUST).stacks
-						< StatusEffect::BLOODLUST_STACK_LIMIT) {
-						buffEffectsReceived.at(StatusEffect::BLOODLUST).stacks++;
-					}
-					buffEffectsReceived.at(StatusEffect::BLOODLUST).startDurationTicks = timer->getTicks();
-				}
-				else {
-					effect.stacks = 1;
-					buffEffectsReceived.insert({effect.buff, effect});
-				}
-				break;
-			default:
-				break;
-		}
-	}
-	if(effect.debuff != StatusEffect::NO_DEBUFF) {
-		if(debuffEffectsReceived.count(effect.debuff) && debuffEffectsReceived.at(effect.debuff).stacks == 0){
-			debuffEffectsReceived.erase(effect.debuff);
-			debuffEffectsReceived.insert({effect.debuff, effect});
-		}
+    if(effect.buff != StatusEffect::NO_BUFF) {
+        switch(effect.buff) {
+            case StatusEffect::BLOODLUST:
+                if(buffEffectsReceived.count(StatusEffect::BLOODLUST) != 0) {
+                    if(buffEffectsReceived.at(StatusEffect::BLOODLUST).stacks
+                        < StatusEffect::BLOODLUST_STACK_LIMIT) {
+                        buffEffectsReceived.at(StatusEffect::BLOODLUST).stacks++;
+                    }
+                    buffEffectsReceived.at(StatusEffect::BLOODLUST).startDurationTicks = timer->getTicks();
+                }
+                else {
+                    effect.stacks = 1;
+                    buffEffectsReceived.insert({effect.buff, effect});
+                }
+                break;
+            default:
+                break;
+        }
+    }
+    if(effect.debuff != StatusEffect::NO_DEBUFF) {
+        if(debuffEffectsReceived.count(effect.debuff) && debuffEffectsReceived.at(effect.debuff).stacks == 0){
+            debuffEffectsReceived.erase(effect.debuff);
+            debuffEffectsReceived.insert({effect.debuff, effect});
+        }
 
-		switch(effect.debuff) {
-			case StatusEffect::KNOCK_UP:
-				velocity.setDy(effect.duration);
-				removeDebuffEffect(StatusEffect::KNOCK_UP);
-				break;
-			case StatusEffect::KNOCK_DOWN:
-				break;
-			default:
-				break;
-		}
-	}
+        switch(effect.debuff) {
+            case StatusEffect::KNOCK_UP:
+                velocity.setDy(effect.duration);
+                removeDebuffEffect(StatusEffect::KNOCK_UP);
+                break;
+            case StatusEffect::KNOCK_DOWN:
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 void PhysicsBody::removeBuffEffect(StatusEffect::BuffEffect type) {
-	if(buffEffectsReceived.count(type) == 0) return;
-	buffEffectsReceived.erase(type);
+    if(buffEffectsReceived.count(type) == 0) return;
+    buffEffectsReceived.erase(type);
 }
 
 bool PhysicsBody::hasBuffEffect(StatusEffect::BuffEffect type) {
-	if(buffEffectsReceived.count(type) == 0) return false;
-	return true;
+    if(buffEffectsReceived.count(type) == 0) return false;
+    return true;
 }
 
 std::unordered_map<StatusEffect::BuffEffect, StatusEffect> PhysicsBody::getBuffEffectsReceived() {
-	return buffEffectsReceived;
+    return buffEffectsReceived;
 }
 
 void PhysicsBody::removeDebuffEffect(StatusEffect::DebuffEffect type) {
-	if(debuffEffectsReceived.count(type) == 0) return;
-	debuffEffectsReceived.erase(type);
+    if(debuffEffectsReceived.count(type) == 0) return;
+    debuffEffectsReceived.erase(type);
 }
 
 bool PhysicsBody::hasDebuffEffect(StatusEffect::DebuffEffect type) {
-	if(debuffEffectsReceived.count(type) == 0) return false;
-	return true;
+    if(debuffEffectsReceived.count(type) == 0) return false;
+    return true;
 }
 
 std::unordered_map<StatusEffect::DebuffEffect, StatusEffect> PhysicsBody::getDebuffEffectsReceived() {
-	return debuffEffectsReceived;
+    return debuffEffectsReceived;
 }
 
 SDL_Rect * PhysicsBody::getBounds() {
-	return &hitbox;
+    return &hitbox;
 }
 
 int PhysicsBody::w() { return hitbox.w; }
@@ -98,56 +98,56 @@ int PhysicsBody::w() { return hitbox.w; }
 int PhysicsBody::h() { return hitbox.h; }
 
 SDL_Point PhysicsBody::location() {
-	return {hitbox.x, hitbox.y};
+    return {hitbox.x, hitbox.y};
 }
 
 void PhysicsBody::translate(int dx, int dy) {
-	hitbox.x += dx;
-	hitbox.y += dy;
+    hitbox.x += dx;
+    hitbox.y += dy;
 }
 
 void PhysicsBody::location(int x, int y) {
-	hitbox.x = x;
-	hitbox.y = y;
+    hitbox.x = x;
+    hitbox.y = y;
 }
 
 mVector PhysicsBody::getVelocity() {
-	return velocity;
+    return velocity;
 }
 
 Direction PhysicsBody::getDirection() {
-	return direction;
+    return direction;
 }
 
 void PhysicsBody::setVelocity(double dx, double dy) {
-	velocity.setDx(dx);
-	velocity.setDy(dy);
+    velocity.setDx(dx);
+    velocity.setDy(dy);
 }
 void PhysicsBody::setXVelocity(double dx) {
-	velocity.setDx(dx);
+    velocity.setDx(dx);
 }
 
 void PhysicsBody::setYVelocity(double dy) {
-	velocity.setDy(dy);
+    velocity.setDy(dy);
 }
 
 void PhysicsBody::setDirection(Direction d) {
-	direction = d;
+    direction = d;
 }
 
 void PhysicsBody::move() {
 
-	if(timer == nullptr) return;
+    if(timer == nullptr) return;
 
-	double timePassed = (timer->getTicks() - moveStartTicks) / 1000.0;
+    double timePassed = (timer->getTicks() - moveStartTicks) / 1000.0;
 
-	if(timePassed > 1) {
-		moveStartTicks = timer->getTicks();
-		return;
-	}
+    if(timePassed > 1) {
+        moveStartTicks = timer->getTicks();
+        return;
+    }
 
-	if(velocity.dx() != 0) hitbox.x += ((double)velocity.dx() * timePassed);
-	if(velocity.dy() != 0) hitbox.y -= ((double)velocity.dy() * timePassed);
+    if(velocity.dx() != 0) hitbox.x += ((double)velocity.dx() * timePassed);
+    if(velocity.dy() != 0) hitbox.y -= ((double)velocity.dy() * timePassed);
 
-	moveStartTicks = timer->getTicks();
+    moveStartTicks = timer->getTicks();
 }

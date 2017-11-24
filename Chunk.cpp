@@ -15,7 +15,7 @@ Chunk::Chunk(SDL_Point point) {
 
     tiles = std::vector<std::vector<Tile>> (CHUNK_WIDTH, std::vector<Tile> (CHUNK_HEIGHT, Tile()));
     bounds = {point.x, point.y, CHUNK_WIDTH * Tile::TILE_WIDTH, CHUNK_HEIGHT * Tile::TILE_HEIGHT};
-
+    
     for(int i = 0; i < CHUNK_WIDTH; i++) {
         for(int j = 0; j < CHUNK_HEIGHT; j ++) {
             tiles.at(i).at(j).setLocation({bounds.x + Tile::TILE_WIDTH * i, bounds.y + Tile::TILE_HEIGHT * j});
@@ -46,7 +46,7 @@ void Chunk::syncTiles() {
     for(int i = 0; i < CHUNK_WIDTH; i++) {
         for(int j = 0; j < CHUNK_HEIGHT; j ++) {
             tiles.at(i).at(j).setLocation({bounds.x + (i * Tile::TILE_WIDTH), bounds.y +
-				(j * Tile::TILE_HEIGHT)});
+                (j * Tile::TILE_HEIGHT)});
         }
     }
 }
@@ -84,13 +84,13 @@ void Chunk::setTileTypes(std::vector<std::vector<Tile::TileType> > tileTypeArray
 }
 
 void Chunk::addChar(Character * c) {
-	charsInChunk.insert(c);
+    charsInChunk.insert(c);
 }
 
 void Chunk::removeChar(Character * c) {
-	charsInChunk.erase(c);
+    charsInChunk.erase(c);
 }
 
 bool Chunk::constainsChar(Character * c) {
-	return charsInChunk.count(c) != 0;
+    return charsInChunk.count(c) != 0;
 }

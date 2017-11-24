@@ -17,15 +17,15 @@
 #include "StatusEffect.hpp"
 
 typedef struct {
-	int frame;
-	int damage;
-	SDL_Rect hitbox;
+    int frame;
+    int damage;
+    SDL_Rect hitbox;
 } DamageFrame;
 
 typedef struct {
-	int attackID;
+    int attackID;
 
-	std::map<int, DamageFrame> damageFrames;
+    std::map<int, DamageFrame> damageFrames;
         //which frames start the chain timer
     int chainStart, chainEnd;
         //how long before skill can be used again
@@ -35,14 +35,14 @@ typedef struct {
     //bool requiresChain;
         //determines if char is locked in animation
     bool hasAnimationLock;
-	mVector skillVelocity;
-	int velStartFrame, velEndFrame;
+    mVector skillVelocity;
+    int velStartFrame, velEndFrame;
         //which skills does this attack chain into
     //std::unordered_set<int> skillChains;
-	int skillChains[2];
-		//
-	std::vector<StatusEffect> debuffEffectsApplied;
-	std::vector<StatusEffect> buffEffectsApplied;
+    int skillChains[2];
+        //
+    std::vector<StatusEffect> debuffEffectsApplied;
+    std::vector<StatusEffect> buffEffectsApplied;
 } Attack;
 
 #endif

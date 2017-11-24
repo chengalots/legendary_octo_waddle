@@ -23,7 +23,7 @@ public:
                 double angle = 0.0, SDL_Point * center = nullptr,
                 SDL_RendererFlip flip = SDL_FLIP_NONE);
     bool loadFromFile(SDL_Renderer * renderer, std::string path);
-	bool loadFromRenderedText(SDL_Renderer * renderer, TTF_Font * font, std::string text, SDL_Color colour);
+    bool loadFromRenderedText(SDL_Renderer * renderer, TTF_Font * font, std::string text, SDL_Color colour);
     Size getSize();
     std::string getName();
     void setName(std::string newName);

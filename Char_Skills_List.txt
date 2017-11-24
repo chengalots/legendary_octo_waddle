@@ -1,139 +1,139 @@
-0							# ROLL (IFRAME)
-1, 0, {0, 0, 0, 0}			# damage frame
-							# debuff effects
-							# debuff duration
-0							# buff effects
-500							# buff duration
-4, 6						# chain frames interval
-2, 9						# skill chains
-0							# cooldown in ms
-500, 0						# skill velocity
-0, 14						# skill velocity frame interval
+0                           # ROLL (IFRAME)
+1, 0, {0, 0, 0, 0}          # damage frame
+                            # debuff effects
+                            # debuff duration
+0                           # buff effects
+500                         # buff duration
+4, 6                        # chain frames interval
+2, 9                        # skill chains
+0                           # cooldown in ms
+500, 0                      # skill velocity
+0, 14                       # skill velocity frame interval
 false
 true
 
-1							# HT
-18, 15, {0, 50, 100, 15}	# damage frame
-		 					# debuff effects
-							# debuff duration
-1, 2, 4						# buff effects
-500, 50, 10000				# buff duration
-20, 22						# chain frames interval
-3, 8						# skill chains
-0							# cooldown in ms
-600, 0						# skill velocity
-8, 16						# skill velocity frame interval
+1                           # HT
+18, 15, {0, 50, 100, 15}    # damage frame
+                            # debuff effects
+                            # debuff duration
+1, 2, 4                     # buff effects
+500, 50, 10000              # buff duration
+20, 22                      # chain frames interval
+3, 8                        # skill chains
+0                           # cooldown in ms
+600, 0                      # skill velocity
+8, 16                       # skill velocity frame interval
 false
 false
 
-2							# OHS	l
-13, 12, {0, 20, 85, 70}		# damage frame
-2							# debuff effect (STAGGER)
-0	 						# debuff effect duration (STAGGER just puts you in animation lock)
-4							# buff effect
-10000						# buff effect duration (reset chance since respective buff is CD_CHANCE_RESET)
-14, 19						# chain frames interval
-8, 5						# skill chains
-2000						# cooldown in ms
-600, 0						# skill velocity
-4, 12						# skill velocity frame interval
+2                            # OHS    l
+13, 12, {0, 20, 85, 70}      # damage frame
+2                            # debuff effect (STAGGER)
+0                            # debuff effect duration (STAGGER just puts you in animation lock)
+4                            # buff effect
+10000                        # buff effect duration (reset chance since respective buff is CD_CHANCE_RESET)
+14, 19                       # chain frames interval
+8, 5                         # skill chains
+2000                         # cooldown in ms
+600, 0                       # skill velocity
+4, 12                        # skill velocity frame interval
 false
 false
 
-3							# REND	l
-7, 15, {0, 20, 130, 30}		# damage frame
-							# debuff effects
-							# debuff duration
-4							# buff effects
-10000						# buff duration
-10, 16						# chain frames interval
-4, 5						# skill chains
-0							# cooldown in ms
-600, 0						# skill velocity
-6, 8						# skill velocity frame interval
+3                           # REND    l
+7, 15, {0, 20, 130, 30}     # damage frame
+                            # debuff effects
+                            # debuff duration
+4                           # buff effects
+10000                       # buff duration
+10, 16                      # chain frames interval
+4, 5                        # skill chains
+0                           # cooldown in ms
+600, 0                      # skill velocity
+6, 8                        # skill velocity frame interval
 true
 false
 
-4							# EVISC l
-6, 10, {0, 15, 120, 75}		# damage frame
-1							# debuff effect
-3000						# debuff duration
-4							# buff effect
-10000						# buff duration
-8, 15						# chain frames interval
-6, 7						# skill chains
-0							# cooldown in ms
-300, 0						# skill velocity
-0, 5						# skill velocity frame interval
+4                           # EVISC l
+6, 10, {0, 15, 120, 75}     # damage frame
+1                           # debuff effect
+3000                        # debuff duration
+4                           # buff effect
+10000                       # buff duration
+8, 15                       # chain frames interval
+6, 7                        # skill chains
+0                           # cooldown in ms
+300, 0                      # skill velocity
+0, 5                        # skill velocity frame interval
 false
 false
 
-5							# MS h
-13, 30, {0, 40, 130, 8}		# damage frame
-1							# debuff effect
-3000						# debuff duration
-4							# buff effect
-10000						# buff duration
-9, 24						# chain frames interval
--1, -1						# skill chains
-0							# cooldown in ms
-500, 0						# skill velocity
-10, 16						# skill velocity frame interval
+5                           # MS h
+13, 30, {0, 40, 130, 8}     # damage frame
+1                           # debuff effect
+3000                        # debuff duration
+4                           # buff effect
+10000                       # buff duration
+9, 24                       # chain frames interval
+-1, -1                      # skill chains
+0                           # cooldown in ms
+500, 0                      # skill velocity
+10, 16                      # skill velocity frame interval
 false
 false
 
-6							# STAGGERING SLASH	l
-8, 8, {0, 20, 110, 70}; 19, 12, {0, 40, 120, 8}		# damage frames
-2							# debuff effects
-0							# debuff durations
-1, 4						# buff effect
-500, 10000					# buff duration
-20, 27						# chain frames interval
-2, 7						# skill chains
+6                           # STAGGERING SLASH    l
+8, 8, {0, 20, 110, 70}; 19, 12, {0, 40, 120, 8}        # damage frames
+2                           # debuff effects
+0                           # debuff durations
+1, 4                        # buff effect
+500, 10000                  # buff duration
+20, 27                      # chain frames interval
+2, 7                        # skill chains
 0
-100, 0						# skill velocity
-10, 16						# skill velocity frame interval
+100, 0                      # skill velocity
+10, 16                      # skill velocity frame interval
 false
 false
 
-7							# AAAA	h
+7                           # AAAA    h
 12, 25, {0, 10, 140, 15}; 15, 15, {-100, 20, 40, 15}; 21, 20, {0, 20, 110, 15}; 23, 20, {-100, 40, 40, 20}
-2							# debuff effects
-0							# debuff durations
-1, 4						# buff effect
-500, 10000					# buff duration
-32, 34						# chain frames interval
-2, 8						# skill chains
+2                           # debuff effects
+0                           # debuff durations
+1, 4                        # buff effect
+500, 10000                  # buff duration
+32, 34                      # chain frames interval
+2, 8                        # skill chains
 0
-100, 0						# skill velocity
-10, 16						# skill velocity frame interval
+100, 0                      # skill velocity
+10, 16                      # skill velocity frame interval
 false
 true
 
-8							# SPINMOVE	h
+8                           # SPINMOVE    h
 12, 20, {0, 0, 110, 90}; 20, 25, {0, 0, 110, 90}
-2							# debuff effects
-0							# debuff durations
-4							# buff effect
-10000						# buff duration
-23, 25						# chain frames interval
-4, 5						# skill chains
+2                           # debuff effects
+0                           # debuff durations
+4                           # buff effect
+10000                       # buff duration
+23, 25                      # chain frames interval
+4, 5                        # skill chains
 0
-200, 0						# skill velocity
-7, 21						# skill velocity frame interval
+200, 0                      # skill velocity
+7, 21                       # skill velocity frame interval
 false
 false
 
-9							# ROLLATTACKH	h
+9                           # ROLLATTACKH    h
 18, 5, {-100, 80, 250, 10};
-0							# debuff effects
-400							# debuff durations
-4							# buff effect
-10000						# buff duration
-22, 25						# chain frames interval
-4, 8						# skill chains
+0                           # debuff effects
+400                         # debuff durations
+4                           # buff effect
+10000                       # buff duration
+22, 25                      # chain frames interval
+4, 8                        # skill chains
 0
-700, 400					# skill velocity
-2, 18						# skill velocity frame interval
+700, 400                    # skill velocity
+2, 18                       # skill velocity frame interval
 false
 true

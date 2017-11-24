@@ -31,16 +31,19 @@ public:
     bool run;
 
 private:
+    void processKeyPresses();
+    void render();
+
         //check if a hitbox can continue to move in specified direction
     bool canMove(Direction direction, Character * character, bool isPlayer);
-	bool testCollisionWithPlayer(Direction direction, Character * character);
+    bool testCollisionWithPlayer(Direction direction, Character * character);
         //bounding box collision detection
     bool testCollision(SDL_Rect rect1, SDL_Rect rect2);
         //used for moving the level and everything in it (except the player)
     void translateChunks(int dx, int dy);
-		//find the tile coordinates of a character
-	SDL_Point chunkLocation(SDL_Point point);
-	SDL_Point absoluteTileLocation(SDL_Point point);
+        //find the tile coordinates of a character
+    SDL_Point chunkLocation(SDL_Point point);
+    SDL_Point absoluteTileLocation(SDL_Point point);
 
         //maximum falling speed
     static const int MAX_FALL_VEL;

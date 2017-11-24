@@ -9,22 +9,22 @@
 #include "Enemy.hpp"
 
 Enemy::Enemy(SDL_Renderer *renderer, Timer *_timer, SDL_Rect _hitbox) :
-	Character(renderer, _timer, {_hitbox.x, _hitbox.y}) {
+    Character(renderer, _timer, {_hitbox.x, _hitbox.y}) {
 
     timer = _timer;
-	//physicsbody = PhysicsBody(_hitbox, _timer);
+    //physicsbody = PhysicsBody(_hitbox, _timer);
 
-	textures = {14, Texture()};
-	skills = std::vector<Attack>(10);
+    textures = {14, Texture()};
+    skills = std::vector<Attack>(10);
 
-	Loader loader;
-	loader.loadAnimations(renderer, &textures, &animations, Loader::ENEMY);
+    Loader loader;
+    loader.loadAnimations(renderer, &textures, &animations, Loader::ENEMY);
 
-	for(int i = 0; i < animations.size(); i++) {
-		animations.at(i).setTimer(timer);
-	}
+    for(int i = 0; i < animations.size(); i++) {
+        animations.at(i).setTimer(timer);
+    }
 
-	loader.loadSkills(&skills, Loader::ENEMY);
+    loader.loadSkills(&skills, Loader::ENEMY);
 }
 
 Enemy::~Enemy() {
@@ -32,7 +32,7 @@ Enemy::~Enemy() {
 }
 
 void Enemy::render(SDL_Renderer *renderer) {
-	Character::render(renderer);
+    Character::render(renderer);
     SDL_RenderDrawRect(renderer, Character::getBounds());
 }
 
@@ -59,8 +59,8 @@ std::unordered_map<StatusEffect::DebuffEffect, StatusEffect> Enemy::getDebuffEff
 mVector Enemy::getVelocity() { return physicsbody.getVelocity(); }
 
 void Enemy::setTimer(Timer *newTimer) {
-	timer = newTimer;
-	physicsbody.setTimer(newTimer);
+    timer = newTimer;
+    physicsbody.setTimer(newTimer);
  }
 
 void Enemy::setVelocity(int dx, int dy) { physicsbody.setVelocity(dx, dy); }

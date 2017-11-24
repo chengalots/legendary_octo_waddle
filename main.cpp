@@ -16,18 +16,18 @@ int main(int argc, const char * argv[]) {
 
     //init and setup, if something fails, free existing resources and quit the program
     if(SDL_Init(SDL_INIT_VIDEO) < 0) {
-        printf("SDL could not init with SDL_INIT_VIDEO. SDL error: %s\n", SDL_GetError());
+        std::cerr << "SDL could not init with SDL_INIT_VIDEO. SDL error: " << SDL_GetError() << std::endl;
         return EXIT_FAILURE;
     }
 
     if(!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
-        printf("SDL2_image could not init with IMG_INIT_PNG. SDL2_image error: %s\n", IMG_GetError());
+        std::cerr << "SDL2_image could not init with IMG_INIT_PNG. SDL2_image error: " << IMG_GetError() << std::endl;
         SDL_Quit();
         return EXIT_FAILURE;
     }
 
 	if(TTF_Init() < 0) {
-		printf("SDL2_ttf could not init. SDL2_ttf error: %s\n", TTF_GetError());
+		std::cerr << "SDL2_ttf could not init. SDL2_ttf error: " << TTF_GetError() << std::endl;
 		IMG_Quit();
 		SDL_Quit();
 		return EXIT_FAILURE;
@@ -37,7 +37,7 @@ int main(int argc, const char * argv[]) {
 		windowSize.w, windowSize.h, SDL_WINDOW_SHOWN);
 
     if(window == nullptr) {
-        printf("Could not create Window. SDL error: %s\n", SDL_GetError());
+        std::cerr << "Could not create Window. SDL error: " << SDL_GetError() << std::endl;
         IMG_Quit();
 		TTF_Quit();
         SDL_Quit();
@@ -48,7 +48,7 @@ int main(int argc, const char * argv[]) {
 		SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
     if(renderer == nullptr) {
-        printf("Could not create Renderer. SDL error: %s\n", SDL_GetError());
+        std::cerr << "Could not create Renderer. SDL error: " << SDL_GetError() << std::endl;
         SDL_DestroyWindow(window);
         IMG_Quit();
 		TTF_Quit();

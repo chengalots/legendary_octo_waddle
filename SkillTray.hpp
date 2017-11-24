@@ -14,19 +14,19 @@
 
 class SkillTray {
 public:
-	SkillTray(std::vector<Attack> * _playerSkills, Timer * _timer, SDL_Rect boundingBox);
-	void render(SDL_Renderer * renderer);
+    SkillTray(std::vector<Attack> * _playerSkills, Timer * _timer, SDL_Rect boundingBox);
+    void render(SDL_Renderer * renderer);
 
 private:
-	static const int COLUMNS;
-	static const int ROWS;
+    static const int COLUMNS;
+    static const int ROWS;
 
-	TTF_Font * font;
-	std::vector<Attack> * playerSkills;
-	std::vector<Texture> labels;
-	SDL_Rect bounds;
-	Timer * timer;
-	std::stringstream ss;
+    TTF_Font * font;
+    std::vector<Attack> * playerSkills;
+    std::vector<Texture> labels;
+    SDL_Rect bounds;
+    Timer * timer;
+    std::stringstream ss;
 };
 
 #endif

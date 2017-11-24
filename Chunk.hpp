@@ -29,15 +29,15 @@ public:
     void setTileType(int i, int j, Tile::TileType tileType);
     void setTileTypes(std::vector<std::vector<Tile::TileType>> tileTypeArray);
 
-	//std::unordered_set<Character *> const * _charsInChunk();
-	void addChar(Character * c);
-	void removeChar(int i);
-	void removeChar(Character * c);
-	bool constainsChar(Character * c);
+    //std::unordered_set<Character *> const * _charsInChunk();
+    void addChar(Character * c);
+    void removeChar(int i);
+    void removeChar(Character * c);
+    bool constainsChar(Character * c);
 
 private:
     std::vector<std::vector<Tile>> tiles;
-	std::unordered_set<Character *> charsInChunk;
+    std::unordered_set<Character *> charsInChunk;
 
     SDL_Rect bounds;
 };

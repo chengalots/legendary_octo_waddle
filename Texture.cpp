@@ -25,7 +25,7 @@ Texture::~Texture() {
 }
 
 void Texture::render(SDL_Renderer *renderer, int x, int y, SDL_Rect *clip, double angle, SDL_Point *center,
-	SDL_RendererFlip flip) {
+    SDL_RendererFlip flip) {
 
     SDL_Rect renderToRect = {x, y, clip == nullptr ? size.w : clip->w, clip == nullptr ? size.h : clip->h};
     SDL_RenderCopyEx(renderer, texture, clip, &renderToRect, angle, center, flip);
@@ -62,23 +62,23 @@ bool Texture::loadFromFile(SDL_Renderer *renderer, std::string path) {
 }
 
 bool Texture::loadFromRenderedText(SDL_Renderer * renderer, TTF_Font * font,
-	std::string text, SDL_Color colour) {
+    std::string text, SDL_Color colour) {
 
-	SDL_Texture *newTexture = nullptr;
-	SDL_Surface *surface = TTF_RenderText_Blended(font, text.c_str(), colour);
+    SDL_Texture *newTexture = nullptr;
+    SDL_Surface *surface = TTF_RenderText_Blended(font, text.c_str(), colour);
 
-	if(surface == nullptr) {
-		printf("Could not load surface from text. SDL2_ttf error: %s\n", TTF_GetError());
-		return false;
-	}
+    if(surface == nullptr) {
+        printf("Could not load surface from text. SDL2_ttf error: %s\n", TTF_GetError());
+        return false;
+    }
 
-	if((newTexture = SDL_CreateTextureFromSurface(renderer, surface)) == nullptr) {
-		printf("Could not create texture from surface. SDL error: %s\n", SDL_GetError());
+    if((newTexture = SDL_CreateTextureFromSurface(renderer, surface)) == nullptr) {
+        printf("Could not create texture from surface. SDL error: %s\n", SDL_GetError());
         SDL_FreeSurface(surface);
         return false;
-	}
+    }
 
-	if(texture != nullptr) {
+    if(texture != nullptr) {
         SDL_DestroyTexture(texture);
         texture = nullptr;
         size = {0, 0};
@@ -89,7 +89,7 @@ bool Texture::loadFromRenderedText(SDL_Renderer * renderer, TTF_Font * font,
     SDL_FreeSurface(surface);
     texture = newTexture;
     name = "text";
-	return true;
+    return true;
 }
 
 Size Texture::getSize() { return size; }

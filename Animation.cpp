@@ -11,7 +11,7 @@
 const std::string Animation::NO_FILE_PATH = "-No file path provided-";
 
 Animation::Animation(Texture *texture, SDL_Rect sheetBounds, SDL_Rect frameRect,
-	int _totalFrames, double _fps, bool _loop) {
+    int _totalFrames, double _fps, bool _loop) {
 
     spriteSheet = texture;
     timer = nullptr;
@@ -45,7 +45,7 @@ Animation::~Animation() {
 void Animation::render(SDL_Renderer *renderer, int x, int y, SDL_RendererFlip flip) {
 
     if(!loop && currentFrame == totalFrames - 1) {
-		SDL_Point c = {frameBounds.w / 2, frameBounds.h / 2};
+        SDL_Point c = {frameBounds.w / 2, frameBounds.h / 2};
         spriteSheet->render(renderer, x, y, &frameBounds, 0, &c, flip);
         if(_isRunning) stop();
         return;
@@ -97,7 +97,7 @@ bool Animation::isPaused() { return _isPaused; }
 bool Animation::isRunning() { return _isRunning; }
 
 void Animation::setFrameBounds(SDL_Rect newBounds) { frameBounds = {newBounds.x,
-	newBounds.y, newBounds.w, newBounds.h}; }
+    newBounds.y, newBounds.w, newBounds.h}; }
 
 void Animation::setName(std::string newName) { name = newName; }
 
@@ -110,7 +110,7 @@ void Animation::start() {
     if(timer == nullptr) return;
 
     startTicks = timer->getTicks();
-	pausedTicks = 0;
+    pausedTicks = 0;
     _isRunning = true;
     _isPaused = false;
     currentFrame = 0;

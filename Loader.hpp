@@ -22,7 +22,7 @@ class Loader {
 public:
     enum LoadType {
         CHARACTER,
-		PLAYER,
+        PLAYER,
         ENEMY
     };
 

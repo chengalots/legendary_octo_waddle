@@ -11,14 +11,14 @@
 Loader::Loader() { }
 
 void Loader::loadAnimations(SDL_Renderer * renderer, std::vector<Texture> * textures,
-	std::vector<Animation> * animations, LoadType type) {
+    std::vector<Animation> * animations, LoadType type) {
 
     switch (type) {
         case PLAYER:
             loadCharAnimations(renderer, textures, animations);
             break;
         case ENEMY:
-			loadCharAnimations(renderer, textures, animations);
+            loadCharAnimations(renderer, textures, animations);
             break;
         default:
             break;
@@ -31,7 +31,7 @@ void Loader::loadSkills(std::vector<Attack> * skills, LoadType type) {
             loadCharSkills(skills);
             break;
         case ENEMY:
-			loadCharSkills(skills);
+            loadCharSkills(skills);
             break;
         default:
             break;
@@ -39,7 +39,7 @@ void Loader::loadSkills(std::vector<Attack> * skills, LoadType type) {
 }
 
 void Loader::loadCharAnimations(SDL_Renderer * renderer, std::vector<Texture> * textures,
-	std::vector<Animation> * animations) {
+    std::vector<Animation> * animations) {
 
     if(fileIn.is_open()) fileIn.close();
 
@@ -67,7 +67,7 @@ void Loader::loadCharAnimations(SDL_Renderer * renderer, std::vector<Texture> * 
         do {
 
             sscanf(input.c_str(), "%d,%d,%d,%d", &sheetBounds.x, &sheetBounds.y,
-				&sheetBounds.w, &sheetBounds.h);
+                &sheetBounds.w, &sheetBounds.h);
 
             std::getline(fileIn, input);
             sscanf(input.c_str(), "%d,%d,%d,%d", &frameRect.x, &frameRect.y, &frameRect.w, &frameRect.h);
@@ -100,102 +100,102 @@ void Loader::loadCharSkills(std::vector<Attack> * skills) {
         return;
     }
 
-	/*
-	// ORDER:
-	//		attackID
-	// 		[x]hitbox
-	//		[x]damage
-	//		[x]damage frames
-	//		debuff effects
-	//		debuff effect duration
-	//		buff effects
-	//		buff effect duration
-	//		chain frames interval
-	//		skill chains
-	//		cooldown -> in ms
-	//		skill velocity
-	//		skill velocity frame interval
-	//		requires chain -> bool
-	//		has animation lock -> bool
-	*/
+    /*
+    // ORDER:
+    //        attackID
+    //         [x]hitbox
+    //        [x]damage
+    //        [x]damage frames
+    //        debuff effects
+    //        debuff effect duration
+    //        buff effects
+    //        buff effect duration
+    //        chain frames interval
+    //        skill chains
+    //        cooldown -> in ms
+    //        skill velocity
+    //        skill velocity frame interval
+    //        requires chain -> bool
+    //        has animation lock -> bool
+    */
 
-	std::stringstream ss;
+    std::stringstream ss;
     std::string input, token;
     Attack * s;
-	int num;
+    int num;
 
     for(int i = 0; i < skills->size(); i++) {
         s = &skills->at(i);
 
-		std::getline(fileIn, input);
-		s->attackID = std::atoi(input.c_str());
-
-		std::getline(fileIn, input);
-
-		if(!input.empty()) {
-			DamageFrame df = {};
-			ss = std::stringstream(input);
-			while(std::getline(ss, token, ';')) {
-				sscanf(token.c_str(), "%d,%d, {%d,%d,%d,%d}", &(df.frame), &(df.damage),
-						&(df.hitbox.x), &(df.hitbox.y), &(df.hitbox.w),
-						&(df.hitbox.h));
-				s->damageFrames.insert({df.frame, df});
-			}
-		}
-
-
-		std::getline(fileIn, input);
-			//debuff effects
-		if(!input.empty()) {
-
-			ss = std::stringstream(input);
-			while(ss >> num) {
-
-				s->debuffEffectsApplied.push_back({(StatusEffect::DebuffEffect)num,
-					StatusEffect::NO_BUFF, 0, 0, 0});
-				if(ss.peek() == ',') ss.ignore();
-			}
-		}
-
-		std::getline(fileIn, input);
-			//debuff effect duration
-		if(!input.empty()) {
-
-			ss = std::stringstream(input);
-			for(auto &effect : s->debuffEffectsApplied) {
-				if(!(ss >> num)) continue;
-				if(num < 0) num = 0;
-				effect.duration = num;
-				if(ss.peek() == ',') ss.ignore();
-			}
-		}
-
-		std::getline(fileIn, input);
-			//buff effects
-		if(!input.empty()) {
-			ss = std::stringstream(input);
-			while(ss >> num) {
-				s->buffEffectsApplied.push_back({StatusEffect::NO_DEBUFF,
-					(StatusEffect::BuffEffect)num, 0, 0, 0});
-				if(ss.peek() == ',') ss.ignore();
-			}
-		}
-
-		std::getline(fileIn, input);
-			//buff effect duration
-		if(!input.empty()) {
-
-			ss = std::stringstream(input);
-			for(auto &effect : s->buffEffectsApplied) {
-				if(!(ss >> num)) continue;
-				if(num < 0) num = 0;
-				effect.duration = num;
-				if(ss.peek() == ',') ss.ignore();
-			}
-		}
+        std::getline(fileIn, input);
+        s->attackID = std::atoi(input.c_str());
 
         std::getline(fileIn, input);
-			//chain frames interval
+
+        if(!input.empty()) {
+            DamageFrame df = {};
+            ss = std::stringstream(input);
+            while(std::getline(ss, token, ';')) {
+                sscanf(token.c_str(), "%d,%d, {%d,%d,%d,%d}", &(df.frame), &(df.damage),
+                        &(df.hitbox.x), &(df.hitbox.y), &(df.hitbox.w),
+                        &(df.hitbox.h));
+                s->damageFrames.insert({df.frame, df});
+            }
+        }
+
+
+        std::getline(fileIn, input);
+            //debuff effects
+        if(!input.empty()) {
+
+            ss = std::stringstream(input);
+            while(ss >> num) {
+
+                s->debuffEffectsApplied.push_back({(StatusEffect::DebuffEffect)num,
+                    StatusEffect::NO_BUFF, 0, 0, 0});
+                if(ss.peek() == ',') ss.ignore();
+            }
+        }
+
+        std::getline(fileIn, input);
+            //debuff effect duration
+        if(!input.empty()) {
+
+            ss = std::stringstream(input);
+            for(auto &effect : s->debuffEffectsApplied) {
+                if(!(ss >> num)) continue;
+                if(num < 0) num = 0;
+                effect.duration = num;
+                if(ss.peek() == ',') ss.ignore();
+            }
+        }
+
+        std::getline(fileIn, input);
+            //buff effects
+        if(!input.empty()) {
+            ss = std::stringstream(input);
+            while(ss >> num) {
+                s->buffEffectsApplied.push_back({StatusEffect::NO_DEBUFF,
+                    (StatusEffect::BuffEffect)num, 0, 0, 0});
+                if(ss.peek() == ',') ss.ignore();
+            }
+        }
+
+        std::getline(fileIn, input);
+            //buff effect duration
+        if(!input.empty()) {
+
+            ss = std::stringstream(input);
+            for(auto &effect : s->buffEffectsApplied) {
+                if(!(ss >> num)) continue;
+                if(num < 0) num = 0;
+                effect.duration = num;
+                if(ss.peek() == ',') ss.ignore();
+            }
+        }
+
+        std::getline(fileIn, input);
+            //chain frames interval
         sscanf(input.c_str(), "%d,%d", &s->chainStart, &s->chainEnd);
 
         if(s->chainStart < 0 || s->chainEnd < s->chainStart) {
@@ -204,8 +204,8 @@ void Loader::loadCharSkills(std::vector<Attack> * skills) {
         }
 
         std::getline(fileIn, input);
-			//skill chains
-		sscanf(input.c_str(), "%d,%d", &s->skillChains[0], &s->skillChains[1]);
+            //skill chains
+        sscanf(input.c_str(), "%d,%d", &s->skillChains[0], &s->skillChains[1]);
         /*if(!input.empty()){
 
             ss = std::stringstream(input);
@@ -215,31 +215,31 @@ void Loader::loadCharSkills(std::vector<Attack> * skills) {
                 if(ss.peek() == ',') ss.ignore();
             }
         }*/
-			//cooldown
+            //cooldown
         std::getline(fileIn, input);
         s->coolDown = std::atoi(input.c_str());
 
         s->coolDownStartTicks = -10000000;
-			//skill velocity
-		std::getline(fileIn, input);
-		int dx, dy;
-		sscanf(input.c_str(), "%d,%d", &dx, &dy);
-		s->skillVelocity.setDx(dx);
-		s->skillVelocity.setDy(dy);
-			//skill velocity frame interval
-		std::getline(fileIn, input);
-		int vsf, vef;
-		sscanf(input.c_str(), "%d,%d", &vsf, &vef);
-		s->velStartFrame = vsf;
-		s->velEndFrame = vef;
+            //skill velocity
+        std::getline(fileIn, input);
+        int dx, dy;
+        sscanf(input.c_str(), "%d,%d", &dx, &dy);
+        s->skillVelocity.setDx(dx);
+        s->skillVelocity.setDy(dy);
+            //skill velocity frame interval
+        std::getline(fileIn, input);
+        int vsf, vef;
+        sscanf(input.c_str(), "%d,%d", &vsf, &vef);
+        s->velStartFrame = vsf;
+        s->velEndFrame = vef;
 
         std::getline(fileIn, input);
-			//requires chain
+            //requires chain
         //if(input == "true") s->requiresChain = true;
         //else if(input == "false") s->requiresChain = false;
 
         std::getline(fileIn, input);
-			//has animation lock
+            //has animation lock
         if(input == "true") s->hasAnimationLock = true;
         else if(input == "false") s->hasAnimationLock = false;
 

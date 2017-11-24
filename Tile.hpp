@@ -25,13 +25,13 @@ public:
         RIGHT_WALL,  //7
         CORNER_BOTR, //8
         BLOCK, //9
-		KILL_BLOCK,
+        KILL_BLOCK,
         ERROR_TYPE //10
     };
 
     static const int TILE_WIDTH, TILE_HEIGHT;
 
-	static const std::unordered_set<TileType> topWalls, bottomWalls, leftWalls, rightWalls;
+    static const std::unordered_set<TileType> topWalls, bottomWalls, leftWalls, rightWalls;
 
     Tile(SDL_Point point = {0, 0}, TileType _tileType = EMPTY_SPACE);
     void render(SDL_Renderer *renderer, Texture *texture);

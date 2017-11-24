@@ -22,13 +22,13 @@ public:
     void render(SDL_Renderer *renderer);
         //frame independent movement along a vector
     /*void move();
-	void removeBuffEffect(StatusEffect::BuffEffect type);
-	bool hasBuffEffect(StatusEffect::BuffEffect type);
-	std::unordered_map<StatusEffect::BuffEffect, StatusEffect> getBuffEffectsReceived();
-	void removeDebuffEffect(StatusEffect::DebuffEffect type);
-	void receiveStatusEffect(StatusEffect effect);
-	bool hasDebuffEffect(StatusEffect::DebuffEffect type);
-	std::unordered_map<StatusEffect::DebuffEffect, StatusEffect> getDebuffEffectsReceived();
+    void removeBuffEffect(StatusEffect::BuffEffect type);
+    bool hasBuffEffect(StatusEffect::BuffEffect type);
+    std::unordered_map<StatusEffect::BuffEffect, StatusEffect> getBuffEffectsReceived();
+    void removeDebuffEffect(StatusEffect::DebuffEffect type);
+    void receiveStatusEffect(StatusEffect effect);
+    bool hasDebuffEffect(StatusEffect::DebuffEffect type);
+    std::unordered_map<StatusEffect::DebuffEffect, StatusEffect> getDebuffEffectsReceived();
     //SDL_Rect * getBounds();
     mVector getVelocity();
     void setTimer(Timer *newTimer);
@@ -39,7 +39,7 @@ public:
 private:
         //timer for frame independent movement
     Timer *timer;
-	//PhysicsBody physicsbody;
+    //PhysicsBody physicsbody;
 };
 
 #endif

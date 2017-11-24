@@ -8,9 +8,7 @@
 
 #ifndef CHARACTER_HPP
 #define CHARACTER_HPP
-#include <tuple>
 #include <unordered_map>
-#include <cstdlib>
 #include "Animation.hpp"
 #include "Attack.hpp"
 #include "Loader.hpp"
@@ -22,8 +20,8 @@ public:
     enum AnimationIndex {
         IDLE = 0,
         RUNNING, //1
-		JUMP, //2
-		FALLING, //3
+        JUMP, //2
+        FALLING, //3
         SKILLS_START //end of regular animations, start of skill animations
     };
 
@@ -36,23 +34,23 @@ public:
         //maximum running speed from user input
     static const int MAX_CHAR_VEL;
 
-	static const int CHAIN_TIME_LIMIT;
+    static const int CHAIN_TIME_LIMIT;
 
-		//holds the textures for animations
-	std::vector<Texture> textures;
-		//contains all available animations in AnimationIndex and Skills enums
-	std::vector<Animation> animations;
-		//contains all available skills in Skills enum
-	std::vector<Attack> skills;
+        //holds the textures for animations
+    std::vector<Texture> textures;
+        //contains all available animations in AnimationIndex and Skills enums
+    std::vector<Animation> animations;
+        //contains all available skills in Skills enum
+    std::vector<Attack> skills;
 
-	Timer chainTimer;
+    Timer chainTimer;
 
-	int jumpCap;
+    int jumpCap;
         //index of current skill in use
     int skillIndex;
 
-	bool hasUnitCollision;
-	bool canMoveUp, canMoveDown, canMoveLeft, canMoveRight;
+    bool hasUnitCollision;
+    bool canMoveUp, canMoveDown, canMoveLeft, canMoveRight;
 
     Character(SDL_Renderer * renderer, Timer * newTimer, SDL_Point spawnPoint);
     ~Character();
@@ -61,17 +59,17 @@ public:
         //use a skill listed in the Skills enum
     void useSkill(int skill, Direction d);
         //return hitbox of a skill or nullptr if no skill is in use
-	Attack getSkill();
+    Attack getSkill();
 
-	void setTimer(Timer * newTimer);
-	SDL_Rect * getBounds();
-	std::vector<Attack> * getSkillSet();
-		//return the direction the player is facing
-	Direction getDirection();
-	void setDirection(Direction d);
+    void setTimer(Timer * newTimer);
+    SDL_Rect * getBounds();
+    std::vector<Attack> * getSkillSet();
+        //return the direction the player is facing
+    Direction getDirection();
+    void setDirection(Direction d);
 
-		//increments jumpCounter
-	void jump();
+        //increments jumpCounter
+    void jump();
     void resetJumpCounter();
     int getJumpCounter();
     void setJumpCounter(int j);
@@ -80,27 +78,27 @@ public:
     void setVelocity(int dx, int dy);
     void setXVelocity(int dx, bool forceRun = false);
     void setYVelocity(int dy);
-		//frame independent movement along a vector
-	void move();
+        //frame independent movement along a vector
+    void move();
 
-	void receiveStatusEffect(StatusEffect effect);
-	void removeBuffEffect(StatusEffect::BuffEffect type);
-	bool hasBuffEffect(StatusEffect::BuffEffect type);
-	std::unordered_map<StatusEffect::BuffEffect, StatusEffect> getBuffEffectsReceived();
+    void receiveStatusEffect(StatusEffect effect);
+    void removeBuffEffect(StatusEffect::BuffEffect type);
+    bool hasBuffEffect(StatusEffect::BuffEffect type);
+    std::unordered_map<StatusEffect::BuffEffect, StatusEffect> getBuffEffectsReceived();
 
-	void removeDebuffEffect(StatusEffect::DebuffEffect type);
-	bool hasDebuffEffect(StatusEffect::DebuffEffect type);
-	std::unordered_map<StatusEffect::DebuffEffect, StatusEffect> getDebuffEffectsReceived();
+    void removeDebuffEffect(StatusEffect::DebuffEffect type);
+    bool hasDebuffEffect(StatusEffect::DebuffEffect type);
+    std::unordered_map<StatusEffect::DebuffEffect, StatusEffect> getDebuffEffectsReceived();
 
 private:
     //static const int NUM_OF_TEXTURES;
-	//static const int SKILLSET_SIZE;
+    //static const int SKILLSET_SIZE;
 
         //*timer points to a constant timer, chainTimer used to determine if
         //  time limit for chaining a skill has expired
     Timer *timer;
     //SDL_Rect hitbox;
-	PhysicsBody physicsbody;
+    PhysicsBody physicsbody;
         //for keeping track of the last time move() was called
     Uint32 moveStartTicks;
 
