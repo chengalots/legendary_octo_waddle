@@ -1,0 +1,82 @@
+images/Idle_60x90.png
+0, 0, 60, 90
+0, 0, 60, 90
+1, 0
+true
+
+images/Running_240x90.png
+0, 0, 240, 90
+0, 0, 60, 90
+4, 16
+true
+
+images/Jump_60x90.png
+0, 0, 60, 90
+0, 0, 60, 90
+1, 0
+true
+
+images/Falling_60x90.png
+0, 0, 60, 90
+0, 0, 60, 90
+1, 0
+true
+
+images/Roll_1200x360.png
+0, 0, 1200, 360
+0, 0, 200, 90
+20, 40
+false
+
+images/SwordThrust_1200x465.png
+0, 0, 1200, 465
+0, 0, 200, 93
+30, 40
+false
+
+images/SwordOverhead2_960x420.png
+0, 0, 960, 420
+0, 0, 160, 140
+18, 40
+false
+
+images/SwordRend5_1200x270.png
+0, 0, 1200, 270
+0, 0, 200, 90
+18, 40
+false
+
+images/SwordEvisc2_900x600.png
+0, 100, 900, 500
+0, 0, 180, 100
+23, 40
+false
+
+images/SwordSlice_1500x600.png
+0, 120, 1500, 480
+0, 0, 250, 120
+24, 40
+false
+
+images/SwordSSlash_1500x600.png
+0, 0, 1500, 600
+0, 0, 250, 120
+27, 40
+false
+
+images/AAAA_1800x540.png
+0, 0, 1800, 540
+0, 0, 300, 90
+34, 40
+false
+
+images/SPINMOVE2_1500x700.png
+0, 0, 1500, 700
+0, 0, 250, 140
+30, 40
+false
+
+images/RollAttackH_1500x960.png
+0, 0, 1500, 960
+0, 0, 300, 160
+30, 40

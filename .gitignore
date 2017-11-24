@@ -1,0 +1,5 @@
+*.o
+gameExecutable
+.DS_Store
+might use these later
+GIMP Saves
