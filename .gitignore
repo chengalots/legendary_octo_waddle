@@ -1,4 +1,4 @@
-.gitignore
+
 *.o
 gameExecutable
 .DS_Store
