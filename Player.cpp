@@ -30,9 +30,6 @@ Player::Player(SDL_Renderer * renderer, Timer * newTimer, SDL_Point spawnPoint) 
 
     loader.loadSkills(&skills, Loader::PLAYER);
 
-    //getBounds()->w = width;
-    //getBounds()->h = height;
-
     jumpCap = 2;
 }
 

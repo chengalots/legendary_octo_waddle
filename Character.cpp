@@ -11,28 +11,13 @@
     //public constants
 const int Character::CHAR_W = 60;
 const int Character::CHAR_H = 90;
-//const int Character::6 = 2;
 const int Character::JUMP_VEL = 610;
 const int Character::MAX_CHAR_VEL = 400;
 const int Character::CHAIN_TIME_LIMIT = 100;
-//const int Character::NUM_OF_TEXTURES = 13;
-//const int Character::SKILLSET_SIZE = 9;
 
 Character::Character(SDL_Renderer * renderer, Timer * newTimer, SDL_Point spawnPoint, Size size) {
 
     timer = newTimer;
-
-    /*textures = {NUM_OF_TEXTURES, Texture()};
-    skills = std::vector<Attack>(SKILLSET_SIZE);
-
-    Loader loader;
-    loader.loadAnimations(renderer, &textures, &animations, Loader::CHARACTER);
-
-    for(int i = 0; i < animations.size(); i++) {
-        animations.at(i).setTimer(timer);
-    }
-
-    loader.loadSkills(&skills, Loader::CHARACTER);*/
 
     moveStartTicks = 0;
 
@@ -122,8 +107,6 @@ void Character::render(SDL_Renderer *renderer) {
             physicsbody.location().y - yOffset,
                          flip);
     }
-
-    //SDL_RenderDrawRect(renderer, physicsbody.getBounds());
 }
 
 void Character::useSkill(int skill, Direction d) {
@@ -148,55 +131,6 @@ void Character::useSkill(int skill, Direction d) {
         skillVelocity.setDy(0);
 
     }
-
-    /*if(timer->getTicks() - skills.at(skill).coolDownStartTicks
-        >= skills.at(skill).coolDown) {
-
-        if(skillIndex >= 0 && skills.at(skillIndex).skillChains.count(skill) != 0
-           && chainTimer.isRunning() && chainTimer.getTicks() <= CHAIN_TIME_LIMIT) {
-
-            if(d != NONE) physicsbody.setDirection(d);
-
-            animations.at(animationIndex).stop();
-
-            skillIndex = skill;
-            animationIndex = skill + (int)SKILLS_START;
-
-            /*if(!skills.at(skillIndex).requiresChain && skill != ROLL) {
-                animations.at(animationIndex).setSpeed(1.0);
-            }
-            else {
-                animations.at(animationIndex).setSpeed(1.0);
-            }
-            animations.at(animationIndex).setSpeed(1.0);
-            animations.at(animationIndex).start();
-
-            chainTimer.stop();
-            previousFrame = -1;
-            skillVelocity.setDx(0);
-            skillVelocity.setDy(0);
-        }
-        else if(!skills.at(skill).requiresChain) {
-            if(skillIndex >= 0) {
-                if(animations.at(skillIndex + SKILLS_START).isRunning()
-                && skills.at(skillIndex).hasAnimationLock) {
-                    return;
-                }
-            }
-
-            animations.at(animationIndex).stop();
-
-            skillIndex = skill;
-            animationIndex = skill + (int)SKILLS_START;
-
-            animations.at(animationIndex).setSpeed(1.0);
-            animations.at(animationIndex).start();
-
-            previousFrame = -1;
-            skillVelocity.setDx(0);
-            skillVelocity.setDy(0);
-        }
-    }*/
 }
 
 Attack Character::getSkill() {
@@ -228,18 +162,13 @@ Attack Character::getSkill() {
         skill.damageFrames.insert({0, damageFrame});
 
         if(physicsbody.getDirection() == LEFT) {
-            //damageFrame.hitbox.x
             skill.damageFrames.at(0).hitbox.x = physicsbody.location().x
                 - damageFrame.hitbox.w + (physicsbody.w() / 2) - damageFrame.hitbox.x;
         }
         else {
-            //damageFrame.hitbox.x
             skill.damageFrames.at(0).hitbox.x = physicsbody.location().x + (physicsbody.w() / 2)
                 + damageFrame.hitbox.x;
         }
-
-        //skill.damageFrames.insert({0, damageFrame});
-        //damageFrame.hitbox.x
 
         skill.damageFrames.at(0).hitbox.y += physicsbody.location().y;
 
@@ -253,22 +182,6 @@ Attack Character::getSkill() {
         skill.buffEffectsApplied = s->buffEffectsApplied;
         skill.attackID = skillIndex;
 
-        /*for(auto &buff : s->buffEffectsApplied) {
-            if(buff.buff == StatusEffect::CD_CHANCE_RESET) {
-
-                int randomNum = + 100.0 * (((double)std::rand()) / ((double)RAND_MAX));
-                randomNum++;
-                if(randomNum <= buff.duration) {
-                    s->coolDownStartTicks = -10000000;
-                }
-                break;
-            }
-            else if(buff.buff == StatusEffect::CD_RESET_SKILL) {
-                skills.at(buff.duration).coolDownStartTicks = -10000000;
-                break;
-            }
-        }*/
-
         if(!animations.at(animationIndex).isRunning()) {
             previousFrame = -1;
         }
@@ -276,7 +189,7 @@ Attack Character::getSkill() {
         previousFrame = animations.at(animationIndex).getCurrentFrame();
     }
 
-    if(/*!s->skillChains.empty() && */s->chainStart <= currentFrame && currentFrame <= s->chainEnd) {
+    if(s->chainStart <= currentFrame && currentFrame <= s->chainEnd) {
         chainTimer.start();
     }
 
@@ -328,7 +241,6 @@ mVector Character::getVelocity() {
 
     if(skillIndex >= 0) {
         if(animations.at(skillIndex + SKILLS_START).isRunning()) {
-            //return mVector(skillVelocity.dx(), physicsbody.getVelocity().dy());
             return skillVelocity;
         }
     }
@@ -361,7 +273,7 @@ void Character::setYVelocity(int dy) {
     physicsbody.setYVelocity(dy);
 
     if(skillIndex <= 0 || !animations.at(skillIndex + SKILLS_START).isRunning()) {
-        if(physicsbody.getVelocity().dy() < -25) { //&& animationIndex == RUNNING
+        if(physicsbody.getVelocity().dy() < -25) {
             animations.at(animationIndex).stop();
             animationIndex = FALLING;
             animations.at(animationIndex).start();
