@@ -1,5 +1,8 @@
+.gitignore
 *.o
 gameExecutable
 .DS_Store
 might use these later
 GIMP Saves
+old_debug_images
+unused_images
