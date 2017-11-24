@@ -271,7 +271,7 @@ void Game::tick() {
 
         //restart the frame timer after everything has been moved
     loopTimer.start();
-
+    
     render();
 }
 
