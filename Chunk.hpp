@@ -33,6 +33,7 @@ public:
     void addChar(Character * c);
     void removeChar(int i);
     void removeChar(Character * c);
+    void removeAllChars();
     bool constainsChar(Character * c);
 
 private:

@@ -459,12 +459,21 @@ void Game::render() {
 }
 
 void Game::updateCollisionGrid() {
+    for(int i = 0; i < chunks.size(); i++) {
+        for(int j = 0; j < chunks.at(i).size(); j++) {
+            chunks.at(i).at(j).removeAllChars();
+        }
+    }
+
     SDL_Point startChunk = chunkLocation(player->location());
     for(int i = startChunk.x; i < startChunk.x + 2 && i < chunks.size(); i++) {
         for(int j = startChunk.y; j < startChunk.y + 2 && j < chunks.at(i).size, j++) {
-            chunks.at(i).at(j).addChar(c)
+            if(testCollision(player->getbounds(), chunks.at(i).at(j).getBounds())) {
+                chunks.at(i).at(j).addChar(c)
+            }
         }
     }
+
 }
 
 bool Game:: canMove(Direction direction, Character * character, bool isPlayer) {
