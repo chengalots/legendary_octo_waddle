@@ -23,7 +23,6 @@ Character::Character(SDL_Renderer * renderer, Timer * newTimer, SDL_Point spawnP
 
     animationIndex = 0;
     skillIndex = 0;
-    hasUnitCollision = true;
     canMoveUp = canMoveDown = canMoveLeft = canMoveRight = false;
     previousFrame = -1;
     physicsbody = PhysicsBody({spawnPoint.x, spawnPoint.y, size.w, size.h}, newTimer);

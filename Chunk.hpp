@@ -35,6 +35,7 @@ public:
     void removeChar(Character * c);
     void removeAllChars();
     bool constainsChar(Character * c);
+    const std::unordered_set<Character *> getCharsInChunk();
 
 private:
     std::vector<std::vector<Tile>> tiles;

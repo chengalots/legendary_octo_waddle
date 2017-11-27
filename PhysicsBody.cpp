@@ -11,6 +11,7 @@
 PhysicsBody::PhysicsBody() {
     timer = nullptr;
     direction = NONE;
+    _hasUnitCollision = true;
 }
 
 PhysicsBody::PhysicsBody(SDL_Rect bounds, Timer * newTimer) {
@@ -98,6 +99,8 @@ int PhysicsBody::w() { return hitbox.w; }
 int PhysicsBody::h() { return hitbox.h; }
 
 bool PhysicsBody::hasUnitCollision() { return _hasUnitCollision; }
+
+void PhysicsBody::hasUnitCollision(bool b) { _hasUnitCollision = b; }
 
 SDL_Point PhysicsBody::location() {
     return {hitbox.x, hitbox.y};

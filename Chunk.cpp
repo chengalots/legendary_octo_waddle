@@ -90,3 +90,5 @@ void Chunk::removeChar(Character * c) { charsInChunk.erase(c); }
 void Chunk::removeAllChars() { charsInChunk.clear(); }
 
 bool Chunk::constainsChar(Character * c) { return charsInChunk.count(c) != 0; }
+
+const std::unordered_set<Character *> Chunk::getCharsInChunk() { return charsInChunk; }

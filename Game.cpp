@@ -27,10 +27,11 @@ Game::Game(SDL_Renderer * _renderer, Size windowSize) {
     player->setPreviousChunk(chunkLocation(player->location()));
 
     //enemy = new Enemy(renderer, &constantTimer, {900, 450, 60, 90}, {Character::CHAR_W, Character::CHAR_H});
-    enemies.push_back(Enemy(renderer, &constantTimer, {900, 450, 60, 90}, {Character::CHAR_W, Character::CHAR_H}));
+    enemies.push_back(new Enemy(renderer, &constantTimer, {900, 450, 60, 90}, {Character::CHAR_W, Character::CHAR_H}));
+
     //enemy->setPreviousChunk(chunkLocation(enemy->location()));
     for(int i = 0; i < enemies.size(); i++) {
-        enemies.at(i).setPreviousChunk(chunkLocation(enemies.at(i).location()))
+        enemies.at(i)->setPreviousChunk(chunkLocation(enemies.at(i)->location()));
     }
 
     origin = {0,0};
@@ -85,7 +86,7 @@ Game::Game(SDL_Renderer * _renderer, Size windowSize) {
     fileIn.close();
 
     translateChunks(0, -150);
-
+    updateCollisionGrid();
         //start constant timer
     constantTimer.start();
 }
@@ -94,7 +95,10 @@ Game::~Game() {
     renderer = nullptr;
     currentKeyStates = nullptr;
     delete player;
-    delete enemy;
+    for(auto &enemy : enemies) {
+        delete enemy;
+    }
+    //delete enemy;
 }
 
 void Game::tick() {
@@ -134,16 +138,16 @@ void Game::tick() {
                         player->setYVelocity(0);
                         break;
                     case SDLK_LEFT:
-                        enemy->setXVelocity(0);
+                        //enemies.at(0).setXVelocity(0); //these shouldn't be here but like...
                         break;
                     case SDLK_RIGHT:
-                        enemy->setXVelocity(0);
+                        //enemies.at(0).setXVelocity(0); //i need to control at least 1 enemy
                         break;
                     case SDLK_UP:
-                        enemy->setYVelocity(0);
+                        //enemies.at(0).setYVelocity(0); // so i can test stuff like collision
                         break;
                     case SDLK_DOWN:
-                        enemy->setYVelocity(0);
+                        //enemies.at(0).setYVelocity(0); // so yeah...
                         break;
                     default:
                         break;
@@ -163,20 +167,24 @@ void Game::tick() {
         //reset the player's jump counter if they're on the ground
     if(!player->canMoveDown) player->resetJumpCounter();
 
+    updateCollisionGrid();
+
 
     //-----------------------------
     ///   Clear StatusEffects   ///
     //-----------------------------
 
-
-    for(auto &effect : enemy->getDebuffEffectsReceived()) {
-        if((int)constantTimer.getTicks() -  effect.second.startDurationTicks >= effect.second.duration) {
-            enemy->removeDebuffEffect(effect.second.debuff);
+    for(auto &enemy : enemies) {
+        for(auto &effect : enemy->getDebuffEffectsReceived()) {
+            if((int)constantTimer.getTicks() -  effect.second.startDurationTicks >= effect.second.duration) {
+                std::cout << "a" << std::endl;
+                enemy->removeDebuffEffect(effect.second.debuff);
+            }
         }
-    }
-    for(auto &effect : enemy->getBuffEffectsReceived()) {
-        if((int)constantTimer.getTicks() -  effect.second.startDurationTicks >= effect.second.duration) {
-            enemy->removeBuffEffect(effect.second.buff);
+        for(auto &effect : enemy->getBuffEffectsReceived()) {
+            if((int)constantTimer.getTicks() -  effect.second.startDurationTicks >= effect.second.duration) {
+                enemy->removeBuffEffect(effect.second.buff);
+            }
         }
     }
 
@@ -197,7 +205,7 @@ void Game::tick() {
     //-----------------------------
 
         //check if there's an attack and if it hits the target dummy
-    Attack skill = player->getSkill();
+    /*Attack skill = player->getSkill();
 
     if(!skill.damageFrames.empty() && skill.damageFrames.at(0).damage > 0) {
         SDL_Rect bounds = enemy->getBounds();
@@ -217,7 +225,7 @@ void Game::tick() {
                 }
             }
         }
-    }
+    }*/
 
 
 
@@ -236,15 +244,17 @@ void Game::tick() {
     }
 
         //apply gravity for target dummy
-    if(canMove(DOWN, enemy, false)) {
-        enemy->setYVelocity(enemy->getVelocity().dy() - (Y_ACCEL * timeStep));
+    for(auto &enemy : enemies) {
+        if(canMove(DOWN, enemy, false)) {
+            enemy->setYVelocity(enemy->getVelocity().dy() - (Y_ACCEL * timeStep));
 
-        if(enemy->getVelocity().dy() < -MAX_FALL_VEL) {
-            enemy->setYVelocity(-MAX_FALL_VEL);
+            if(enemy->getVelocity().dy() < -MAX_FALL_VEL) {
+                enemy->setYVelocity(-MAX_FALL_VEL);
+            }
         }
-    }
-    else if(enemy->getVelocity().dy() < 0) {
-        enemy->setYVelocity(0);
+        else if(enemy->getVelocity().dy() < 0) {
+            enemy->setYVelocity(0);
+        }
     }
 
 
@@ -262,13 +272,15 @@ void Game::tick() {
     }
 
         //move the target dummy
-    if(std::abs(enemy->getVelocity().dx()) >= 1) {
-        if(std::abs(enemy->getVelocity().dx() + player->getVelocity().dx()) < 1) {
-            enemy->setXVelocity(enemy->getVelocity().dx() + player->getVelocity().dx(), true);
+    for(auto &enemy : enemies) {
+        if(std::abs(enemy->getVelocity().dx()) >= 1) {
+            if(std::abs(enemy->getVelocity().dx() + player->getVelocity().dx()) < 1) {
+                enemy->setXVelocity(enemy->getVelocity().dx() + player->getVelocity().dx(), true);
+            }
+            else enemy->setXVelocity(enemy->getVelocity().dx() + player->getVelocity().dx());
         }
-        else enemy->setXVelocity(enemy->getVelocity().dx() + player->getVelocity().dx());
+        enemy->move();
     }
-    enemy->move();
 
         //do another collision check for player
     player->canMoveUp = canMove(UP, player, true);
@@ -395,35 +407,35 @@ void Game::processKeyPresses() {
             //---------------------
             ///TargetDummy Ctrls///
 
-    if(currentKeyStates[SDL_SCANCODE_UP] && canMove(UP, enemy, false)) {
-        enemy->setYVelocity(Character::MAX_CHAR_VEL);
+    /*if(currentKeyStates[SDL_SCANCODE_UP] && canMove(UP, enemy, false)) {
+        enemies.at(0).setYVelocity(Character::MAX_CHAR_VEL);
     }
-    if(enemy->getVelocity().dy() > 0 && !canMove(UP, enemy, false)) {
-        enemy->setYVelocity(0);
+    if(enemies.at(0).getVelocity().dy() > 0 && !canMove(UP, enemy, false)) {
+        enemies.at(0).setYVelocity(0);
     }
 
     if(currentKeyStates[SDL_SCANCODE_DOWN] && canMove(DOWN, enemy, false)) {
-        enemy->setYVelocity(-Character::MAX_CHAR_VEL);
+        enemies.at(0).setYVelocity(-Character::MAX_CHAR_VEL);
     }
-    if(enemy->getVelocity().dy() < 0 && !canMove(DOWN, enemy, false)) {
-        enemy->setYVelocity(0);
+    if(enemies.at(0).getVelocity().dy() < 0 && !canMove(DOWN, enemy, false)) {
+        enemies.at(0).setYVelocity(0);
     }
 
     if(currentKeyStates[SDL_SCANCODE_LEFT] && canMove(LEFT, enemy, false)) {
-        enemy->setXVelocity(-Character::Character::MAX_CHAR_VEL);
-        enemy->setDirection(LEFT);
+        enemies.at(0).setXVelocity(-Character::Character::MAX_CHAR_VEL);
+        enemies.at(0).setDirection(LEFT);
     }
-    if(enemy->getVelocity().dx() < 0 && !canMove(LEFT, enemy, false)) {
-        enemy->setXVelocity(0);
+    if(enemies.at(0).getVelocity().dx() < 0 && !canMove(LEFT, enemy, false)) {
+        enemies.at(0).setXVelocity(0);
     }
 
     if(currentKeyStates[SDL_SCANCODE_RIGHT] && canMove(RIGHT, enemy, false)) {
-        enemy->setXVelocity(Character::MAX_CHAR_VEL);
-        enemy->setDirection(RIGHT);
+        enemies.at(0).setXVelocity(Character::MAX_CHAR_VEL);
+        enemies.at(0).setDirection(RIGHT);
     }
-    if(enemy->getVelocity().dx() > 0 && !canMove(RIGHT, enemy, false)) {
-        enemy->setXVelocity(0);
-    }
+    if(enemies.at(0).getVelocity().dx() > 0 && !canMove(RIGHT, enemy, false)) {
+        enemies.at(0).setXVelocity(0);
+    }*/
 }
 
 void Game::render() {
@@ -450,8 +462,10 @@ void Game::render() {
 
             //---------------------
             ///  Target Dummy   ///
-
-    enemy->render(renderer);
+    for(auto &enemy : enemies) {
+        enemy->render(renderer);
+    }
+    //enemy->render(renderer);
 
             //---------------------
             ///     Player      ///
@@ -478,6 +492,16 @@ void Game::updateCollisionGrid() {
         }
     }
 
+    for(int i = 0; i < enemies.size(); i++) {
+        SDL_Point startChunk = chunkLocation(enemies.at(i)->location());
+        for(int j = startChunk.x; j < startChunk.x + 2 && j < chunks.size(); j++) {
+            for(int k = startChunk.y; k < startChunk.y + 2 && k < chunks.at(i).size(); k++) {
+                if(testCollision(enemies.at(i)->getBounds(), chunks.at(j).at(k).getBounds())) {
+                    chunks.at(j).at(k).addChar(enemies.at(i));
+                }
+            }
+        }
+    }
 }
 
 bool Game:: canMove(Direction direction, Character * character, bool isPlayer) {
@@ -631,10 +655,12 @@ void Game::translateChunks(int dx, int dy) {
     origin.x += dx;
     origin.y += dy;
 
-    if(std::abs(enemy->getVelocity().dx()) < 1) {
-        enemy->translate(dx, 0);
+    for(auto &enemy : enemies) {
+        if(std::abs(enemy->getVelocity().dx()) < 1) {
+            enemy->translate(dx, 0);
+        }
+        enemy->translate(0, dy);
     }
-    enemy->translate(0, dy);
 }
 
 SDL_Point Game::chunkLocation(SDL_Point point) {
