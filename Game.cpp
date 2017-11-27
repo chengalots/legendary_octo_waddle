@@ -26,17 +26,14 @@ Game::Game(SDL_Renderer * _renderer, Size windowSize) {
         {(camera.w - Character::CHAR_W) / 2, (camera.h - Character::CHAR_H) / 2});
     player->setPreviousChunk(chunkLocation(player->location()));
 
-    //enemy = new Enemy(renderer, &constantTimer, {900, 450, 60, 90}, {Character::CHAR_W, Character::CHAR_H});
     enemies.push_back(new Enemy(renderer, &constantTimer, {900, 450, 60, 90}, {Character::CHAR_W, Character::CHAR_H}));
 
-    //enemy->setPreviousChunk(chunkLocation(enemy->location()));
     for(int i = 0; i < enemies.size(); i++) {
         enemies.at(i)->setPreviousChunk(chunkLocation(enemies.at(i)->location()));
     }
 
     origin = {0,0};
 
-    //canMoveUp = canMoveDown = canMoveLeft = canMoveRight = false;
         //get a reference to keyboard states
     currentKeyStates = SDL_GetKeyboardState(nullptr);
         //load texture for the tiles
@@ -98,7 +95,7 @@ Game::~Game() {
     for(auto &enemy : enemies) {
         delete enemy;
     }
-    //delete enemy;
+    enemies.clear();
 }
 
 void Game::tick() {
@@ -163,17 +160,17 @@ void Game::tick() {
     //-----------------------------
     ///    Reset jumpCounter    ///
     //-----------------------------
-
         //reset the player's jump counter if they're on the ground
     if(!player->canMoveDown) player->resetJumpCounter();
 
+    //-----------------------------
+    ///     Collision Grid      ///
+    //-----------------------------
     updateCollisionGrid();
-
 
     //-----------------------------
     ///   Clear StatusEffects   ///
     //-----------------------------
-
     for(auto &enemy : enemies) {
         for(auto &effect : enemy->getDebuffEffectsReceived()) {
             if((int)constantTimer.getTicks() -  effect.second.startDurationTicks >= effect.second.duration) {
@@ -199,11 +196,9 @@ void Game::tick() {
         }
     }
 
-
     //-----------------------------
     ///     Attack hitboxes     ///
     //-----------------------------
-
         //check if there's an attack and if it hits the target dummy
     /*Attack skill = player->getSkill();
 
@@ -226,8 +221,6 @@ void Game::tick() {
             }
         }
     }*/
-
-
 
     //-----------------------------
     ///      Apply gravity      ///
@@ -257,12 +250,9 @@ void Game::tick() {
         }
     }
 
-
-
     //-----------------------------
     ///    Translate chunks     ///
     //-----------------------------
-
         //move the background -> scrolling background so it looks like the camera is centered on the player
     if(std::abs(player->getVelocity().dx()) >= 0.05) {
         translateChunks(player->getVelocity().dx() * timeStep, 0);
@@ -442,10 +432,8 @@ void Game::render() {
     //-----------------------------
     ///        Rendering        ///
     //-----------------------------
-
     SDL_SetRenderDrawColor(renderer, 0x24, 0x24, 0x24, 0xFF);
     SDL_RenderClear(renderer);
-
             //---------------------
             ///   Background    ///
 
@@ -459,17 +447,13 @@ void Game::render() {
     }
 
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0, 0xFF);
-
             //---------------------
             ///  Target Dummy   ///
     for(auto &enemy : enemies) {
         enemy->render(renderer);
     }
-    //enemy->render(renderer);
-
             //---------------------
             ///     Player      ///
-
     player->render(renderer);
 
         //draw everything
@@ -566,8 +550,6 @@ bool Game:: canMove(Direction direction, Character * character, bool isPlayer) {
                 if(collisionFound) {
                     if(isPlayer) translateChunks(dx, dy);
                     else {
-                        //hitbox->x -= dx;
-                        //hitbox->y -= dy;
                         character->translate(-dx, -dy);
                     }
                     return false;
@@ -575,67 +557,10 @@ bool Game:: canMove(Direction direction, Character * character, bool isPlayer) {
             }
         }
     }
-    //add unit collision here
-    /*if(!isPlayer && testCollisionWithPlayer(direction, character)) {
-        return false;
-    }*/
+    //add unit collision here?
     return true;
 }
 
-/*bool Game::testCollisionWithPlayer(Direction direction, Character * character) {
-    SDL_Rect * charHitbox = character->getBounds();
-    SDL_Rect playerHitbox = *player->getBounds();
-    if(player->hasUnitCollision && character->hasUnitCollision
-        && testCollision(*charHitbox, playerHitbox)) {
-        int dx = 0, dy = 0;
-        switch (direction) {
-            case LEFT:
-                if(playerHitbox.x + playerHitbox.w - 25 < charHitbox->x
-                    && playerHitbox.y + 1 < charHitbox->y + charHitbox->h
-                    && playerHitbox.y + playerHitbox.h - 1 > charHitbox->y) {
-
-                    dx = charHitbox->x - (playerHitbox.x + playerHitbox.w);
-                    charHitbox->x -= dx;
-                    return true;
-                }
-                break;
-            case RIGHT:
-                if(charHitbox->x + charHitbox->w - 25 < playerHitbox.x
-                    && playerHitbox.y + 1 < charHitbox->y + charHitbox->h
-                    && playerHitbox.y + playerHitbox.h - 1 > charHitbox->y) {
-
-                    dx = charHitbox->x + charHitbox->w - playerHitbox.x;
-                    charHitbox->x -= dx;
-                    return true;
-                }
-                break;
-            case UP:
-                if(playerHitbox.y + playerHitbox.h - 25 < charHitbox->y
-                    && playerHitbox.x < charHitbox->x + charHitbox->w
-                    && playerHitbox.x + playerHitbox.w - 1 > charHitbox->x) {
-
-                    dy = charHitbox->y - (playerHitbox.y + playerHitbox.h);
-                    charHitbox->y -= dy;
-                    return true;
-                }
-                break;
-            case DOWN:
-                if(charHitbox->y + charHitbox->h - 25 < playerHitbox.y
-                    && playerHitbox.x < charHitbox->x + charHitbox->w
-                    && playerHitbox.x + playerHitbox.w - 1 > charHitbox->x) {
-
-                    dy = charHitbox->y + charHitbox->h - playerHitbox.y;
-                    charHitbox->y -= dy;
-                    return true;
-                }
-                break;
-            default:
-                break;
-        }
-    }
-    return false;
-}
-*/
 bool Game::testCollision(SDL_Rect rect1, SDL_Rect rect2) {
     if(rect1.x > rect2.x + rect2.w) return false;
     if(rect1.x + rect1.w < rect2.x) return false;
