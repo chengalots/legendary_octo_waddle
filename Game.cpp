@@ -437,23 +437,23 @@ void Game::render() {
             //---------------------
             ///   Background    ///
     SDL_Point startChunk = chunkLocation({0, 0});
-    int xCeil = ceil((double)camera.w / (double)(Chunk::CHUNK_WIDTH * Tile::TILE_WIDTH));
-    int yCeil = ceil((double)camera.h / (double)(Chunk::CHUNK_HEIGHT * Tile::TILE_HEIGHT));
-    for(int i = startChunk.x; i <= startChunk.x + xCeil && i < chunks.size(); i++) {
-        for(int j = startChunk.y; j <= startChunk.y + yCeil && j < chunks.at(i).size(); j++) {
-                //check if the chunk is visible
+    int xLimit = ceil((double)camera.w / (double)(Chunk::CHUNK_WIDTH * Tile::TILE_WIDTH));
+    int yLimit = ceil((double)camera.h / (double)(Chunk::CHUNK_HEIGHT * Tile::TILE_HEIGHT));
+        //check the chunks around the camera that might be visible
+    for(int i = startChunk.x; i <= startChunk.x + xLimit && i < chunks.size(); i++) {
+        for(int j = startChunk.y; j <= startChunk.y + yLimit && j < chunks.at(i).size(); j++) {
+                //check if the chunk is actually visible
             if(testCollision(camera, chunks.at(i).at(j).getBounds())) {
                 chunks.at(i).at(j).render(renderer, camera, &tileTexture);
+                    //render the enemies in the visible chunks
+                for(auto &enemy : chunks.at(i).at(j).getCharsInChunk()) {
+                    enemy->render(renderer);
+                }
             }
         }
     }
 
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0, 0xFF);
-            //---------------------
-            ///  Target Dummy   ///
-    for(auto &enemy : enemies) {
-        enemy->render(renderer);
-    }
             //---------------------
             ///     Player      ///
     player->render(renderer);
