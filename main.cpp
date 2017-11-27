@@ -24,13 +24,13 @@ int initSDL2() {
 
     if(!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
         std::cerr << "SDL2_image could not init with IMG_INIT_PNG. SDL2_image error: " << IMG_GetError() << std::endl;
-        quitSDL2()
+        quitSDL2();
         return EXIT_FAILURE;
     }
 
     if(TTF_Init() < 0) {
         std::cerr << "SDL2_ttf could not init. SDL2_ttf error: " << TTF_GetError() << std::endl;
-        quitSDL2()
+        quitSDL2();
         return EXIT_FAILURE;
     }
 }
@@ -46,7 +46,7 @@ int main(int argc, const char * argv[]) {
 
     if(window == nullptr) {
         std::cerr << "Could not create Window. SDL error: " << SDL_GetError() << std::endl;
-        quitSDL2()
+        quitSDL2();
         return EXIT_FAILURE;
     }
 
@@ -55,7 +55,7 @@ int main(int argc, const char * argv[]) {
     if(renderer == nullptr) {
         std::cerr << "Could not create Renderer. SDL error: " << SDL_GetError() << std::endl;
         SDL_DestroyWindow(window);
-        quitSDL2()
+        quitSDL2();
         return EXIT_FAILURE;
     }
 
@@ -85,7 +85,7 @@ int main(int argc, const char * argv[]) {
     renderer = nullptr;
     SDL_DestroyWindow(window);
     window = nullptr;
-    quitSDL2()
+    quitSDL2();
     //end program
     return EXIT_SUCCESS;
 }

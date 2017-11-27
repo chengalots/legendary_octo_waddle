@@ -55,6 +55,7 @@ private:
     Player * player;
         //a target dummy, change to std::vector of enemies later
     Enemy * enemy;
+    std::vector<Enemy> enemies;
 
         //2D std::vector of chunks, the level "background" or "terrain"
     std::vector< std::vector<Chunk> > chunks;

@@ -27,6 +27,7 @@ Game::Game(SDL_Renderer * _renderer, Size windowSize) {
     player->setPreviousChunk(chunkLocation(player->location()));
 
     enemy = new Enemy(renderer, &constantTimer, {900, 450, 60, 90}, {Character::CHAR_W, Character::CHAR_H});
+    //enemies.push_back(Enemy(renderer, &constantTimer, {900, 450, 60, 90}, {Character::CHAR_W, Character::CHAR_H}));
     enemy->setPreviousChunk(chunkLocation(enemy->location()));
 
     origin = {0,0};
@@ -467,9 +468,9 @@ void Game::updateCollisionGrid() {
 
     SDL_Point startChunk = chunkLocation(player->location());
     for(int i = startChunk.x; i < startChunk.x + 2 && i < chunks.size(); i++) {
-        for(int j = startChunk.y; j < startChunk.y + 2 && j < chunks.at(i).size, j++) {
-            if(testCollision(player->getbounds(), chunks.at(i).at(j).getBounds())) {
-                chunks.at(i).at(j).addChar(c)
+        for(int j = startChunk.y; j < startChunk.y + 2 && j < chunks.at(i).size(); j++) {
+            if(testCollision(player->getBounds(), chunks.at(i).at(j).getBounds())) {
+                chunks.at(i).at(j).addChar(player);
             }
         }
     }
