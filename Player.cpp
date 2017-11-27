@@ -13,7 +13,7 @@ const int Player::SKILLSET_SIZE = 10;
 const int Player::NUM_OF_TEXTURES = 14;
 
 Player::Player(SDL_Renderer * renderer, Timer * newTimer, SDL_Point spawnPoint) :
-    Character(renderer, newTimer, spawnPoint, {width, height}) {
+    Character(newTimer, spawnPoint, {width, height}) {
     textures.clear();
     animations.clear();
     skills.clear();
@@ -24,7 +24,7 @@ Player::Player(SDL_Renderer * renderer, Timer * newTimer, SDL_Point spawnPoint) 
     Loader loader;
     loader.loadAnimations(renderer, &textures, &animations, Loader::PLAYER);
 
-    for(int i = 0; i < animations.size(); i++) {
+    for(unsigned int i = 0; i < animations.size(); i++) {
         animations.at(i).setTimer(newTimer);
     }
 

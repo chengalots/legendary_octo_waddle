@@ -28,7 +28,7 @@ Game::Game(SDL_Renderer * _renderer, Size windowSize) {
 
     enemies.push_back(new Enemy(renderer, &constantTimer, {900, 450, 60, 90}, {Character::CHAR_W, Character::CHAR_H}));
 
-    for(int i = 0; i < enemies.size(); i++) {
+    for(unsigned int i = 0; i < enemies.size(); i++) {
         enemies.at(i)->setPreviousChunk(chunkLocation(enemies.at(i)->location()));
     }
 
@@ -440,8 +440,8 @@ void Game::render() {
     int xLimit = ceil((double)camera.w / (double)(Chunk::CHUNK_WIDTH * Tile::TILE_WIDTH));
     int yLimit = ceil((double)camera.h / (double)(Chunk::CHUNK_HEIGHT * Tile::TILE_HEIGHT));
         //check the chunks around the camera that might be visible
-    for(int i = startChunk.x; i <= startChunk.x + xLimit && i < chunks.size(); i++) {
-        for(int j = startChunk.y; j <= startChunk.y + yLimit && j < chunks.at(i).size(); j++) {
+    for(unsigned int i = startChunk.x; i <= (unsigned int)(startChunk.x + xLimit) && i < chunks.size(); i++) {
+        for(unsigned int j = startChunk.y; j <= (unsigned int)(startChunk.y + yLimit) && j < chunks.at(i).size(); j++) {
                 //check if the chunk is actually visible
             if(testCollision(camera, chunks.at(i).at(j).getBounds())) {
                 chunks.at(i).at(j).render(renderer, camera, &tileTexture);
@@ -463,25 +463,25 @@ void Game::render() {
 }
 
 void Game::updateCollisionGrid() {
-    for(int i = 0; i < chunks.size(); i++) {
-        for(int j = 0; j < chunks.at(i).size(); j++) {
+    for(unsigned int i = 0; i < chunks.size(); i++) {
+        for(unsigned int j = 0; j < chunks.at(i).size(); j++) {
             chunks.at(i).at(j).removeAllChars();
         }
     }
 
     SDL_Point startChunk = chunkLocation(player->location());
-    for(int i = startChunk.x; i < startChunk.x + 2 && i < chunks.size(); i++) {
-        for(int j = startChunk.y; j < startChunk.y + 2 && j < chunks.at(i).size(); j++) {
+    for(unsigned int i = startChunk.x; i < (unsigned int)(startChunk.x + 2) && i < chunks.size(); i++) {
+        for(unsigned int j = startChunk.y; j < (unsigned int)(startChunk.y + 2) && j < chunks.at(i).size(); j++) {
             if(testCollision(player->getBounds(), chunks.at(i).at(j).getBounds())) {
                 chunks.at(i).at(j).addChar(player);
             }
         }
     }
 
-    for(int i = 0; i < enemies.size(); i++) {
+    for(unsigned int i = 0; i < enemies.size(); i++) {
         SDL_Point startChunk = chunkLocation(enemies.at(i)->location());
-        for(int j = startChunk.x; j < startChunk.x + 2 && j < chunks.size(); j++) {
-            for(int k = startChunk.y; k < startChunk.y + 2 && k < chunks.at(i).size(); k++) {
+        for(unsigned int j = startChunk.x; j < (unsigned int)(startChunk.x + 2) && j < chunks.size(); j++) {
+            for(unsigned int k = startChunk.y; k < (unsigned int)(startChunk.y + 2) && k < chunks.at(i).size(); k++) {
                 if(testCollision(enemies.at(i)->getBounds(), chunks.at(j).at(k).getBounds())) {
                     chunks.at(j).at(k).addChar(enemies.at(i));
                 }
@@ -495,8 +495,8 @@ bool Game:: canMove(Direction direction, Character * character, bool isPlayer) {
     SDL_Rect hitbox = character->getBounds();
     SDL_Point startTile = absoluteTileLocation({hitbox.x, hitbox.y});
 
-    for(int i = startTile.x; i < startTile.x + 2 && (i / Chunk::CHUNK_WIDTH) < chunks.size(); i++) {
-        for(int j = startTile.y; j < startTile.y + 2  &&
+    for(unsigned int i = startTile.x; i < (unsigned int)(startTile.x + 2) && (i / Chunk::CHUNK_WIDTH) < chunks.size(); i++) {
+        for(unsigned int j = startTile.y; j < (unsigned int)(startTile.y + 2)  &&
             (j / Chunk::CHUNK_HEIGHT) < chunks.at(i / Chunk::CHUNK_WIDTH).size(); j++) {
             Tile tile = chunks.at(i / Chunk::CHUNK_WIDTH).at(j / Chunk::CHUNK_HEIGHT)
                 .getTile(i % Chunk::CHUNK_WIDTH, j % Chunk::CHUNK_HEIGHT);
@@ -573,8 +573,8 @@ bool Game::testCollision(SDL_Rect rect1, SDL_Rect rect2) {
 
 void Game::translateChunks(int dx, int dy) {
         //move the background
-    for(int i = 0; i < chunks.size(); i++) {
-        for(int j = 0; j < chunks.at(i).size(); j ++) {
+    for(unsigned int i = 0; i < chunks.size(); i++) {
+        for(unsigned int j = 0; j < chunks.at(i).size(); j ++) {
             chunks.at(i).at(j).translate(dx, dy);
         }
     }

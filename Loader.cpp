@@ -57,7 +57,7 @@ void Loader::loadCharAnimations(SDL_Renderer * renderer, std::vector<Texture> * 
     int totalFrames, fps;
     bool loop = false;
 
-    for(int i = 0; i < textures->size(); i++) {
+    for(unsigned int i = 0; i < textures->size(); i++) {
 
         std::getline(fileIn, input);
         textures->at(i).loadFromFile(renderer, input);
@@ -124,7 +124,7 @@ void Loader::loadCharSkills(std::vector<Attack> * skills) {
     Attack * s;
     int num;
 
-    for(int i = 0; i < skills->size(); i++) {
+    for(unsigned int i = 0; i < skills->size(); i++) {
         s = &skills->at(i);
 
         std::getline(fileIn, input);

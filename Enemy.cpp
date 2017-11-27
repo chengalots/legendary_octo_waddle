@@ -9,7 +9,7 @@
 #include "Enemy.hpp"
 
 Enemy::Enemy(SDL_Renderer *renderer, Timer *_timer, SDL_Rect _hitbox, Size size) :
-    Character(renderer, _timer, {_hitbox.x, _hitbox.y}, size) {
+    Character(_timer, {_hitbox.x, _hitbox.y}, size) {
 
     timer = _timer;
     //physicsbody = PhysicsBody(_hitbox, _timer);
@@ -20,7 +20,7 @@ Enemy::Enemy(SDL_Renderer *renderer, Timer *_timer, SDL_Rect _hitbox, Size size)
     Loader loader;
     loader.loadAnimations(renderer, &textures, &animations, Loader::ENEMY);
 
-    for(int i = 0; i < animations.size(); i++) {
+    for(unsigned int i = 0; i < animations.size(); i++) {
         animations.at(i).setTimer(timer);
     }
 

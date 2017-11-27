@@ -15,7 +15,7 @@ const int Character::JUMP_VEL = 610;
 const int Character::MAX_CHAR_VEL = 400;
 const int Character::CHAIN_TIME_LIMIT = 100;
 
-Character::Character(SDL_Renderer * renderer, Timer * newTimer, SDL_Point spawnPoint, Size size) {
+Character::Character(Timer * newTimer, SDL_Point spawnPoint, Size size) {
 
     timer = newTimer;
 
@@ -95,7 +95,7 @@ void Character::render(SDL_Renderer *renderer) {
 
     int xOffset = 0, yOffset = 0;
 
-    if(!animations.empty() && animationIndex >= 0 && animationIndex < animations.size()) {
+    if(!animations.empty() && animationIndex >= 0 && (unsigned int)animationIndex < animations.size()) {
 
         if(animations.at(animationIndex).getFrameBounds().w > physicsbody.w()) {
             xOffset = (animations.at(animationIndex).getFrameBounds().w - physicsbody.w()) / 2;
@@ -120,7 +120,7 @@ void Character::useSkill(int skill, Direction d) {
 
     animations.at(animationIndex).stop();
 
-    if(timer->getTicks() - skills.at(skill).coolDownStartTicks >= skills.at(skill).coolDown) {
+    if(timer->getTicks() - skills.at(skill).coolDownStartTicks >= (unsigned int)skills.at(skill).coolDown) {
         skillIndex = skill;
         animationIndex = skill + (int)SKILLS_START;
         animations.at(animationIndex).setSpeed(1.0);
@@ -320,6 +320,6 @@ SDL_Point Character::getPreviousChunk() {
     return previousChunk;
 }
 
-SDL_Point Character::setPreviousChunk(SDL_Point p) {
+void Character::setPreviousChunk(SDL_Point p) {
     previousChunk = p;
 }

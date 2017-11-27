@@ -51,7 +51,7 @@ public:
 
     bool canMoveUp, canMoveDown, canMoveLeft, canMoveRight;
 
-    Character(SDL_Renderer * renderer, Timer * newTimer, SDL_Point spawnPoint, Size size);
+    Character(Timer * newTimer, SDL_Point spawnPoint, Size size);
     ~Character();
     void render(SDL_Renderer * renderer);
 
@@ -93,7 +93,7 @@ public:
     std::unordered_map<StatusEffect::DebuffEffect, StatusEffect> getDebuffEffectsReceived();
 
     SDL_Point getPreviousChunk();
-    SDL_Point setPreviousChunk(SDL_Point p);
+    void setPreviousChunk(SDL_Point p);
 private:
     //static const int NUM_OF_TEXTURES;
     //static const int SKILLSET_SIZE;

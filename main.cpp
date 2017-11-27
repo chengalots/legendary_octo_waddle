@@ -33,9 +33,10 @@ int initSDL2() {
         quitSDL2();
         return EXIT_FAILURE;
     }
+    return EXIT_SUCCESS;
 }
 
-int main(int argc, const char * argv[]) {
+int main() {
     Size windowSize = {1280, 720};
 
     //init and setup, if something fails, free existing resources and quit the program
