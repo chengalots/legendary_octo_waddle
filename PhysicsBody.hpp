@@ -34,6 +34,7 @@ public:
     SDL_Rect getBounds();
     int w();
     int h();
+    bool hasUnitCollision();
     SDL_Point location();
     void location(int x, int y);
     void translate(int dx, int dy);
@@ -51,6 +52,7 @@ private:
     std::unordered_map<StatusEffect::BuffEffect, StatusEffect> buffEffectsReceived;
 
     SDL_Rect hitbox;
+    bool _hasUnitCollision;
 
     mVector velocity;
     Direction direction;

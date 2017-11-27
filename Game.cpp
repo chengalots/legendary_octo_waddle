@@ -26,9 +26,12 @@ Game::Game(SDL_Renderer * _renderer, Size windowSize) {
         {(camera.w - Character::CHAR_W) / 2, (camera.h - Character::CHAR_H) / 2});
     player->setPreviousChunk(chunkLocation(player->location()));
 
-    enemy = new Enemy(renderer, &constantTimer, {900, 450, 60, 90}, {Character::CHAR_W, Character::CHAR_H});
-    //enemies.push_back(Enemy(renderer, &constantTimer, {900, 450, 60, 90}, {Character::CHAR_W, Character::CHAR_H}));
-    enemy->setPreviousChunk(chunkLocation(enemy->location()));
+    //enemy = new Enemy(renderer, &constantTimer, {900, 450, 60, 90}, {Character::CHAR_W, Character::CHAR_H});
+    enemies.push_back(Enemy(renderer, &constantTimer, {900, 450, 60, 90}, {Character::CHAR_W, Character::CHAR_H}));
+    //enemy->setPreviousChunk(chunkLocation(enemy->location()));
+    for(int i = 0; i < enemies.size(); i++) {
+        enemies.at(i).setPreviousChunk(chunkLocation(enemies.at(i).location()))
+    }
 
     origin = {0,0};
 

@@ -97,6 +97,8 @@ int PhysicsBody::w() { return hitbox.w; }
 
 int PhysicsBody::h() { return hitbox.h; }
 
+bool PhysicsBody::hasUnitCollision() { return _hasUnitCollision; }
+
 SDL_Point PhysicsBody::location() {
     return {hitbox.x, hitbox.y};
 }

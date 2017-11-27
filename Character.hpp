@@ -49,7 +49,6 @@ public:
         //index of current skill in use
     int skillIndex;
 
-    bool hasUnitCollision;
     bool canMoveUp, canMoveDown, canMoveLeft, canMoveRight;
 
     Character(SDL_Renderer * renderer, Timer * newTimer, SDL_Point spawnPoint, Size size);
@@ -63,6 +62,7 @@ public:
 
     void setTimer(Timer * newTimer);
     SDL_Rect getBounds();
+    bool hasUnitCollision();
     void translate(int dx, int dy);
     SDL_Point location();
     std::vector<Attack> * getSkillSet();

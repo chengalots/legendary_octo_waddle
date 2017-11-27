@@ -207,6 +207,8 @@ void Character::setTimer(Timer *newTimer) {
 
 SDL_Rect Character::getBounds() { return physicsbody.getBounds(); }
 
+bool Character::hasUnitCollision() { return physicsbody.hasUnitCollision(); }
+
 void Character::translate(int dx, int dy) { physicsbody.translate(dx, dy); }
 
 SDL_Point Character::location() { return physicsbody.location(); }
