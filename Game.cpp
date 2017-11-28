@@ -135,16 +135,16 @@ void Game::tick() {
                         player->setYVelocity(0);
                         break;
                     case SDLK_LEFT:
-                        //enemies.at(0).setXVelocity(0); //these shouldn't be here but like...
+                        if(!enemies.empty()) enemies.at(0)->setXVelocity(0); //these shouldn't be here but like...
                         break;
                     case SDLK_RIGHT:
-                        //enemies.at(0).setXVelocity(0); //i need to control at least 1 enemy
+                        if(!enemies.empty()) enemies.at(0)->setXVelocity(0); //i need to control at least 1 enemy
                         break;
                     case SDLK_UP:
-                        //enemies.at(0).setYVelocity(0); // so i can test stuff like collision
+                        if(!enemies.empty()) enemies.at(0)->setYVelocity(0); // so i can test stuff like collision
                         break;
                     case SDLK_DOWN:
-                        //enemies.at(0).setYVelocity(0); // so yeah...
+                        if(!enemies.empty()) enemies.at(0)->setYVelocity(0); // so yeah...
                         break;
                     default:
                         break;
@@ -288,10 +288,8 @@ void Game::processKeyPresses() {
     //-----------------------------
     ///   Process key presses   ///
     //-----------------------------
-
         //determine which keys are pressed and move the background accordingly, no else if statements allows
         //    simultaneous key presses
-
             //---------------------
             ///      A key      ///
 
@@ -312,7 +310,6 @@ void Game::processKeyPresses() {
             }
         }
     }
-
             //---------------------
             ///      D key      ///
 
@@ -322,8 +319,6 @@ void Game::processKeyPresses() {
         player->setXVelocity(-Character::MAX_CHAR_VEL);
         player->setDirection(RIGHT);
     }
-        //if character is trying to move RIGHT but that direction is blocked, set the velocity to 0 to prevent
-        //    jittering
     if(player->getVelocity().dx() < 0 && !player->canMoveRight) {
         player->setXVelocity(0);
         if(player->canMoveDown) {
@@ -332,7 +327,6 @@ void Game::processKeyPresses() {
             }
         }
     }
-
             //---------------------
             ///      W key      ///
 
@@ -343,7 +337,6 @@ void Game::processKeyPresses() {
     if(player->getVelocity().dy() > 0 && !player->canMoveUp) {
         player->setYVelocity(0);
     }
-
             //---------------------
             ///      S key      ///
 
@@ -353,79 +346,67 @@ void Game::processKeyPresses() {
     if(player->getVelocity().dy() < 0 && !player->canMoveDown) {
         player->setYVelocity(0);
     }
-
             //---------------------
             ///      1 key      ///
 
     if(currentKeyStates[SDL_SCANCODE_1]) {
         Direction d = NONE;
-
         if(currentKeyStates[SDL_SCANCODE_A] && !currentKeyStates[SDL_SCANCODE_D]) d = LEFT;
         else if(currentKeyStates[SDL_SCANCODE_D] && !currentKeyStates[SDL_SCANCODE_A]) d = RIGHT;
         else d = NONE;
-
         player->useSkill(Player::LIGHT, d);
     }
-
             //---------------------
             ///      2 key      ///
 
     else if(currentKeyStates[SDL_SCANCODE_2]) {
         Direction d = NONE;
-
         if(currentKeyStates[SDL_SCANCODE_A] && !currentKeyStates[SDL_SCANCODE_D]) d = LEFT;
         else if(currentKeyStates[SDL_SCANCODE_D] && !currentKeyStates[SDL_SCANCODE_A]) d = RIGHT;
         else d = NONE;
-
         player->useSkill(Player::HEAVY, d);
     }
-
-
             //---------------------
             ///      C key      ///
-
     else if(currentKeyStates[SDL_SCANCODE_C]) {
         Direction d = NONE;
-
         if(currentKeyStates[SDL_SCANCODE_A] && !currentKeyStates[SDL_SCANCODE_D]) d = LEFT;
         else if(currentKeyStates[SDL_SCANCODE_D] && !currentKeyStates[SDL_SCANCODE_A]) d = RIGHT;
         else d = NONE;
-
         player->useSkill(Player::DODGE, d);
     }
 
             //---------------------
             ///TargetDummy Ctrls///
-
-    /*if(currentKeyStates[SDL_SCANCODE_UP] && canMove(UP, enemy, false)) {
-        enemies.at(0).setYVelocity(Character::MAX_CHAR_VEL);
+    if(currentKeyStates[SDL_SCANCODE_UP] && canMove(UP, enemies.at(0), false)) {
+        enemies.at(0)->setYVelocity(Character::MAX_CHAR_VEL);
     }
-    if(enemies.at(0).getVelocity().dy() > 0 && !canMove(UP, enemy, false)) {
-        enemies.at(0).setYVelocity(0);
-    }
-
-    if(currentKeyStates[SDL_SCANCODE_DOWN] && canMove(DOWN, enemy, false)) {
-        enemies.at(0).setYVelocity(-Character::MAX_CHAR_VEL);
-    }
-    if(enemies.at(0).getVelocity().dy() < 0 && !canMove(DOWN, enemy, false)) {
-        enemies.at(0).setYVelocity(0);
+    if(enemies.at(0)->getVelocity().dy() > 0 && !canMove(UP, enemies.at(0), false)) {
+        enemies.at(0)->setYVelocity(0);
     }
 
-    if(currentKeyStates[SDL_SCANCODE_LEFT] && canMove(LEFT, enemy, false)) {
-        enemies.at(0).setXVelocity(-Character::Character::MAX_CHAR_VEL);
-        enemies.at(0).setDirection(LEFT);
+    if(currentKeyStates[SDL_SCANCODE_DOWN] && canMove(DOWN, enemies.at(0), false)) {
+        enemies.at(0)->setYVelocity(-Character::MAX_CHAR_VEL);
     }
-    if(enemies.at(0).getVelocity().dx() < 0 && !canMove(LEFT, enemy, false)) {
-        enemies.at(0).setXVelocity(0);
+    if(enemies.at(0)->getVelocity().dy() < 0 && !canMove(DOWN, enemies.at(0), false)) {
+        enemies.at(0)->setYVelocity(0);
     }
 
-    if(currentKeyStates[SDL_SCANCODE_RIGHT] && canMove(RIGHT, enemy, false)) {
-        enemies.at(0).setXVelocity(Character::MAX_CHAR_VEL);
-        enemies.at(0).setDirection(RIGHT);
+    if(currentKeyStates[SDL_SCANCODE_LEFT] && canMove(LEFT, enemies.at(0), false)) {
+        enemies.at(0)->setXVelocity(-Character::Character::MAX_CHAR_VEL);
+        enemies.at(0)->setDirection(LEFT);
     }
-    if(enemies.at(0).getVelocity().dx() > 0 && !canMove(RIGHT, enemy, false)) {
-        enemies.at(0).setXVelocity(0);
-    }*/
+    if(enemies.at(0)->getVelocity().dx() < 0 && !canMove(LEFT, enemies.at(0), false)) {
+        enemies.at(0)->setXVelocity(0);
+    }
+
+    if(currentKeyStates[SDL_SCANCODE_RIGHT] && canMove(RIGHT, enemies.at(0), false)) {
+        enemies.at(0)->setXVelocity(Character::MAX_CHAR_VEL);
+        enemies.at(0)->setDirection(RIGHT);
+    }
+    if(enemies.at(0)->getVelocity().dx() > 0 && !canMove(RIGHT, enemies.at(0), false)) {
+        enemies.at(0)->setXVelocity(0);
+    }
 }
 
 void Game::render() {
