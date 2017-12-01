@@ -40,7 +40,7 @@ Game::Game(SDL_Renderer * _renderer, Size windowSize) {
     if(!tileTexture.loadFromFile(renderer, "images/tiles2.png")) run = false;
 
         //read the map info from file and set the tile types accordingly
-    std::ifstream fileIn("maps/map1.txt");
+    std::ifstream fileIn("maps/map2.txt");
         //check if the file openned
     if(!fileIn) run = false;
     else {
@@ -92,7 +92,7 @@ Game::~Game() {
     renderer = nullptr;
     currentKeyStates = nullptr;
     delete player;
-    for(auto &enemy : enemies) {
+    for(Character *enemy : enemies) {
         delete enemy;
     }
     enemies.clear();
@@ -171,7 +171,7 @@ void Game::tick() {
     //-----------------------------
     ///   Clear StatusEffects   ///
     //-----------------------------
-    for(auto &enemy : enemies) {
+    for(Character *enemy : enemies) {
         for(auto &effect : enemy->getDebuffEffectsReceived()) {
             if((int)constantTimer.getTicks() -  effect.second.startDurationTicks >= effect.second.duration) {
                 std::cout << "a" << std::endl;
@@ -237,7 +237,7 @@ void Game::tick() {
     }
 
         //apply gravity for target dummy
-    for(auto &enemy : enemies) {
+    for(Character *enemy : enemies) {
         if(canMove(DOWN, enemy, false)) {
             enemy->setYVelocity(enemy->getVelocity().dy() - (Y_ACCEL * timeStep));
 
@@ -262,7 +262,7 @@ void Game::tick() {
     }
 
         //move the target dummy
-    for(auto &enemy : enemies) {
+    for(Character *enemy : enemies) {
         if(std::abs(enemy->getVelocity().dx()) >= 1) {
             if(std::abs(enemy->getVelocity().dx() + player->getVelocity().dx()) < 1) {
                 enemy->setXVelocity(enemy->getVelocity().dx() + player->getVelocity().dx(), true);
@@ -292,7 +292,6 @@ void Game::processKeyPresses() {
         //    simultaneous key presses
             //---------------------
             ///      A key      ///
-
         //if A key is pressed and D key is not pressed and the player can move to the left, set the velocity to
         //    move to the left
     if(currentKeyStates[SDL_SCANCODE_A] && !currentKeyStates[SDL_SCANCODE_D] && player->canMoveLeft) {
@@ -427,7 +426,7 @@ void Game::render() {
             if(testCollision(camera, chunks.at(i).at(j).getBounds())) {
                 chunks.at(i).at(j).render(renderer, camera, &tileTexture);
                     //render the enemies in the visible chunks
-                for(auto &enemy : chunks.at(i).at(j).getCharsInChunk()) {
+                for(Character *enemy : chunks.at(i).at(j).getCharsInChunk()) {
                     enemy->render(renderer);
                 }
             }
@@ -475,12 +474,15 @@ bool Game:: canMove(Direction direction, Character * character, bool isPlayer) {
     double zipCorrection = 0.25;
     SDL_Rect hitbox = character->getBounds();
     SDL_Point startTile = absoluteTileLocation({hitbox.x, hitbox.y});
+    Chunk * previousChunk = nullptr;
 
     for(unsigned int i = startTile.x; i < (unsigned int)(startTile.x + 2) && (i / Chunk::CHUNK_WIDTH) < chunks.size(); i++) {
         for(unsigned int j = startTile.y; j < (unsigned int)(startTile.y + 2)  &&
             (j / Chunk::CHUNK_HEIGHT) < chunks.at(i / Chunk::CHUNK_WIDTH).size(); j++) {
+
             Tile tile = chunks.at(i / Chunk::CHUNK_WIDTH).at(j / Chunk::CHUNK_HEIGHT)
                 .getTile(i % Chunk::CHUNK_WIDTH, j % Chunk::CHUNK_HEIGHT);
+
             if(testCollision(hitbox, tile.getBounds())) {
                 int dx = 0, dy = 0;
                 bool collisionFound = false;
@@ -538,9 +540,40 @@ bool Game:: canMove(Direction direction, Character * character, bool isPlayer) {
                     return false;
                 }
             }
+
+            if(previousChunk != &chunks.at(i / Chunk::CHUNK_WIDTH).at(j / Chunk::CHUNK_HEIGHT)) {
+                for(Character * character2 : chunks.at(i / Chunk::CHUNK_WIDTH).at(j / Chunk::CHUNK_HEIGHT).getCharsInChunk()) {
+                    if(character != character2 && testCollision(character->getBounds(), character2->getBounds())) {
+                        switch(direction) {
+                            case LEFT:
+                                if(character->getBounds().x > character2->getBounds().x && std::abs(character->getBounds().y - character2->getBounds().y) < character2->getBounds().h - 20) {
+                                    return false;
+                                }
+                                break;
+                            case RIGHT:
+                                if(character->getBounds().x < character2->getBounds().x && std::abs(character->getBounds().y - character2->getBounds().y) < character2->getBounds().h - 20) {
+                                    return false;
+                                }
+                                break;
+                            case UP:
+                                if(character->getBounds().y > character2->getBounds().y && std::abs(character->getBounds().x - character2->getBounds().x) < character2->getBounds().w - 20) {
+                                    return false;
+                                }
+                                break;
+                            case DOWN:
+                                if(character->getBounds().y < character2->getBounds().y && std::abs(character->getBounds().x - character2->getBounds().x) < character2->getBounds().w - 20) {
+                                    return false;
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+                previousChunk = &chunks.at(i / Chunk::CHUNK_WIDTH).at(j / Chunk::CHUNK_HEIGHT);
+            }
         }
     }
-    //add unit collision here?
     return true;
 }
 
@@ -563,7 +596,7 @@ void Game::translateChunks(int dx, int dy) {
     origin.x += dx;
     origin.y += dy;
 
-    for(auto &enemy : enemies) {
+    for(Character *enemy : enemies) {
         if(std::abs(enemy->getVelocity().dx()) < 1) {
             enemy->translate(dx, 0);
         }

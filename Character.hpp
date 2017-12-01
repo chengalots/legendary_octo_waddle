@@ -69,7 +69,7 @@ public:
         //return the direction the player is facing
     Direction getDirection();
     void setDirection(Direction d);
-
+    
         //increments jumpCounter
     void jump();
     void resetJumpCounter();
@@ -95,9 +95,6 @@ public:
     SDL_Point getPreviousChunk();
     void setPreviousChunk(SDL_Point p);
 private:
-    //static const int NUM_OF_TEXTURES;
-    //static const int SKILLSET_SIZE;
-
         //*timer points to a constant timer, chainTimer used to determine if
         //  time limit for chaining a skill has expired
     Timer *timer;
