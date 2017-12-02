@@ -42,9 +42,8 @@ Game::Game(SDL_Renderer * _renderer, Size windowSize) {
         //read the map info from file and set the tile types accordingly
     std::ifstream fileIn("maps/map2.txt");
         //check if the file openned
-    if(!fileIn) run = false;
-    else {
-            //for storing the dimensions of the chunks std::vector
+    if(fileIn) {
+        //for storing the dimensions of the chunks std::vector
         int x = 0, y = 0;
             //attempt to read the dimensions from file, quit if it fails
         if(!(fileIn >> x)) run = false;
@@ -79,6 +78,9 @@ Game::Game(SDL_Renderer * _renderer, Size windowSize) {
                 }
             }
         }
+    }
+    else {
+        run = false;
     }
     fileIn.close();
 
@@ -416,7 +418,7 @@ void Game::render() {
                 chunks.at(i).at(j).render(renderer, camera, &tileTexture);
                     //render the enemies in the visible chunks
                 for(Character *enemy : chunks.at(i).at(j).getCharsInChunk()) {
-                    enemy->render(renderer);
+                    ((Enemy *)enemy)->render(renderer);
                 }
             }
         }
