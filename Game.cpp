@@ -326,22 +326,11 @@ void Game::processKeyPresses() {
             }
         }
     }
-            //---------------------
-            ///      W key      ///
 
-        //same idea as with the A and D keys to go LEFT and RIGHT, only here it's W and S to go UP and DOWN
-    if(currentKeyStates[SDL_SCANCODE_W] && !currentKeyStates[SDL_SCANCODE_S] && player->canMoveUp) {
-        player->setYVelocity(Character::MAX_CHAR_VEL);
-    }
     if(player->getVelocity().dy() > 0 && !player->canMoveUp) {
         player->setYVelocity(0);
     }
-            //---------------------
-            ///      S key      ///
 
-    if(currentKeyStates[SDL_SCANCODE_S] && !currentKeyStates[SDL_SCANCODE_W] && player->canMoveDown) {
-        player->setYVelocity(-Character::MAX_CHAR_VEL);
-    }
     if(player->getVelocity().dy() < 0 && !player->canMoveDown) {
         player->setYVelocity(0);
     }
@@ -480,11 +469,11 @@ bool Game:: canMove(Direction direction, Character * character, bool isPlayer) {
         for(unsigned int j = startTile.y; j < (unsigned int)(startTile.y + 2)  &&
             (j / Chunk::CHUNK_HEIGHT) < chunks.at(i / Chunk::CHUNK_WIDTH).size(); j++) {
 
-            Tile tile = chunks.at(i / Chunk::CHUNK_WIDTH).at(j / Chunk::CHUNK_HEIGHT)
-                .getTile(i % Chunk::CHUNK_WIDTH, j % Chunk::CHUNK_HEIGHT);
+            Tile tile = chunks.at(i / Chunk::CHUNK_WIDTH).at(j / Chunk::CHUNK_HEIGHT).getTile(i % Chunk::CHUNK_WIDTH, j % Chunk::CHUNK_HEIGHT);
+
+            int dx = 0, dy = 0;
 
             if(testCollision(hitbox, tile.getBounds())) {
-                int dx = 0, dy = 0;
                 bool collisionFound = false;
                 switch(direction) {
                     case LEFT:
@@ -543,25 +532,25 @@ bool Game:: canMove(Direction direction, Character * character, bool isPlayer) {
 
             if(previousChunk != &chunks.at(i / Chunk::CHUNK_WIDTH).at(j / Chunk::CHUNK_HEIGHT)) {
                 for(Character * character2 : chunks.at(i / Chunk::CHUNK_WIDTH).at(j / Chunk::CHUNK_HEIGHT).getCharsInChunk()) {
-                    if(character != character2 && testCollision(character->getBounds(), character2->getBounds())) {
+                    if(character != character2 && testCollision(hitbox, character2->getBounds())) {
                         switch(direction) {
                             case LEFT:
-                                if(character->getBounds().x > character2->getBounds().x && std::abs(character->getBounds().y - character2->getBounds().y) < character2->getBounds().h - 20) {
+                                if(hitbox.x > character2->getBounds().x && std::abs(hitbox.y - character2->getBounds().y) < character2->getBounds().h - 20) {
                                     return false;
                                 }
                                 break;
                             case RIGHT:
-                                if(character->getBounds().x < character2->getBounds().x && std::abs(character->getBounds().y - character2->getBounds().y) < character2->getBounds().h - 20) {
+                                if(hitbox.x < character2->getBounds().x && std::abs(hitbox.y - character2->getBounds().y) < character2->getBounds().h - 20) {
                                     return false;
                                 }
                                 break;
                             case UP:
-                                if(character->getBounds().y > character2->getBounds().y && std::abs(character->getBounds().x - character2->getBounds().x) < character2->getBounds().w - 20) {
+                                if(hitbox.y > character2->getBounds().y && std::abs(hitbox.x - character2->getBounds().x) < character2->getBounds().w - 20) {
                                     return false;
                                 }
                                 break;
                             case DOWN:
-                                if(character->getBounds().y < character2->getBounds().y && std::abs(character->getBounds().x - character2->getBounds().x) < character2->getBounds().w - 20) {
+                                if(hitbox.y < character2->getBounds().y && std::abs(hitbox.x - character2->getBounds().x) < character2->getBounds().w - 20) {
                                     return false;
                                 }
                                 break;
