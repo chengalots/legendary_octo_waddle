@@ -416,6 +416,13 @@ void Game::render() {
                 //check if the chunk is actually visible
             if(testCollision(camera, chunks.at(i).at(j).getBounds())) {
                 chunks.at(i).at(j).render(renderer, camera, &tileTexture);
+            }
+        }
+    }
+    for(unsigned int i = startChunk.x; i <= (unsigned int)(startChunk.x + xLimit) && i < chunks.size(); i++) {
+        for(unsigned int j = startChunk.y; j <= (unsigned int)(startChunk.y + yLimit) && j < chunks.at(i).size(); j++) {
+                //check if the chunk is actually visible
+            if(testCollision(camera, chunks.at(i).at(j).getBounds())) {
                     //render the enemies in the visible chunks
                 for(Character *enemy : chunks.at(i).at(j).getCharsInChunk()) {
                     ((Enemy *)enemy)->render(renderer);
