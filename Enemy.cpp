@@ -33,9 +33,9 @@ Enemy::~Enemy() {
 
 void Enemy::render(SDL_Renderer *renderer) {
     Character::render(renderer);
-    SDL_Rect bounds = Character::getBounds();
-    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0, 0xFF);
-    SDL_RenderDrawRect(renderer, &bounds);
+    //SDL_Rect bounds = Character::getBounds();
+    //SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0, 0xFF);
+    //SDL_RenderDrawRect(renderer, &bounds);
 }
 
 /*void Enemy::move() { physicsbody.move(); }

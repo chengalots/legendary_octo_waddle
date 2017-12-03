@@ -7,7 +7,7 @@ true
 images/Running3_1000x300.png
 0, 0, 1000, 300
 0, 0, 250, 100
-12, 25
+12, 30
 true
 
 images/Jump_60x90.png
