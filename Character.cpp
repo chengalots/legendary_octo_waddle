@@ -241,9 +241,24 @@ int Character::getJumpCounter() {
 void Character::setJumpCounter(int j) { jumpCounter = j; }
 
 mVector Character::getVelocity() {
-
     if(skillIndex >= 0) {
         if(animations.at(skillIndex + SKILLS_START).isRunning()) {
+            switch(physicsbody.getDirection()) {
+                case LEFT:
+                    if(!canMoveLeft) return mVector(0, physicsbody.getVelocity().dy());
+                    break;
+                case RIGHT:
+                    if(!canMoveRight) return mVector(0, physicsbody.getVelocity().dy());
+                    break;
+                case UP:
+                    if(!canMoveUp) return mVector(physicsbody.getVelocity().dx(), 0);
+                    break;
+                case DOWN:
+                    if(!canMoveDown) return mVector(physicsbody.getVelocity().dx(), 0);
+                    break;
+                default:
+                    break;
+            }
             return skillVelocity;
         }
     }

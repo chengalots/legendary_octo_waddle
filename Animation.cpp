@@ -68,7 +68,7 @@ void Animation::render(SDL_Renderer *renderer, int x, int y, SDL_RendererFlip fl
         }
 
         startTicks = timer->getTicks();
-        pausedTicks = 0;
+        //pausedTicks = 0;
     }
         //flipping requires a centre, 0 is a rotation angle
     SDL_Point c = {frameBounds.w / 2, frameBounds.h / 2};

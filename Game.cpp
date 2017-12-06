@@ -40,7 +40,7 @@ Game::Game(SDL_Renderer * _renderer, Size windowSize) {
     if(!tileTexture.loadFromFile(renderer, "images/tiles2.png")) run = false;
 
         //read the map info from file and set the tile types accordingly
-    std::ifstream fileIn("maps/map2.txt");
+    std::ifstream fileIn("maps/map1.txt");
         //check if the file openned
     if(fileIn) {
         //for storing the dimensions of the chunks std::vector
@@ -202,7 +202,7 @@ void Game::tick() {
     ///     Attack hitboxes     ///
     //-----------------------------
         //check if there's an attack and if it hits the target dummy
-    Attack skill = player->getSkill();
+    //Attack skill = player->getSkill();
 
     /*if(!skill.damageFrames.empty() && skill.damageFrames.at(0).damage > 0) {
         SDL_Rect bounds = enemy->getBounds();

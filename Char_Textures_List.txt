@@ -34,10 +34,10 @@ images/SwordThrust_1200x465.png
 30, 40
 false
 
-images/SwordOverhead2_960x420.png
-0, 0, 960, 420
-0, 0, 160, 140
-18, 40
+images/SwordAttack1_3_1200x480.png
+0, 0, 1200, 480
+0, 0, 300, 120
+16, 30
 false
 
 images/SwordRend5_1200x270.png
