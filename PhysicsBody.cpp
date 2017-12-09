@@ -100,7 +100,7 @@ int PhysicsBody::h() { return hitbox.h; }
 
 bool PhysicsBody::hasUnitCollision() { return _hasUnitCollision; }
 
-void PhysicsBody::hasUnitCollision(bool b) { _hasUnitCollision = b; }
+void PhysicsBody::setUnitCollision(bool b) { _hasUnitCollision = b; }
 
 SDL_Point PhysicsBody::location() {
     return {hitbox.x, hitbox.y};

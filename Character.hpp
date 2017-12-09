@@ -63,13 +63,14 @@ public:
     void setTimer(Timer * newTimer);
     SDL_Rect getBounds();
     bool hasUnitCollision();
+    void setUnitCollision(bool b);
     void translate(int dx, int dy);
     SDL_Point location();
     std::vector<Attack> * getSkillSet();
         //return the direction the player is facing
     Direction getDirection();
     void setDirection(Direction d);
-    
+
         //increments jumpCounter
     void jump();
     void resetJumpCounter();

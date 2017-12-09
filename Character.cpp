@@ -27,13 +27,12 @@ Character::Character(Timer * newTimer, SDL_Point spawnPoint, Size size) {
     previousFrame = -1;
     physicsbody = PhysicsBody({spawnPoint.x, spawnPoint.y, size.w, size.h}, newTimer);
     physicsbody.setDirection(RIGHT);
+    physicsbody.setUnitCollision(true);
     hp = 100;
     jumpCap = 1;
     jumpCounter = 0;
 
     previousChunk = {0, 0};
-
-    //std::srand(SDL_GetTicks());
 }
 
 Character::~Character() {
@@ -101,12 +100,12 @@ void Character::render(SDL_Renderer *renderer) {
             xOffset = (animations.at(animationIndex).getFrameBounds().w - physicsbody.w()) / 2;
         }
         if(animations.at(animationIndex).getFrameBounds().h > physicsbody.h()) {
-            yOffset = (animations.at(animationIndex).getFrameBounds().h - physicsbody.h());
+            yOffset = (animations.at(animationIndex).getFrameBounds().h - physicsbody.h()) / 2;
         }
 
-        animations.at(animationIndex).render(renderer, physicsbody.location().x - xOffset,
-            physicsbody.location().y - yOffset,
-                         flip);
+        animations.at(animationIndex).render(renderer, physicsbody.location().x - xOffset, physicsbody.location().y - yOffset, flip);
+        //SDL_Rect bounds = physicsbody.getBounds();
+        //SDL_RenderDrawRect(renderer, &bounds);
     }
 }
 
@@ -208,6 +207,8 @@ SDL_Rect Character::getBounds() { return physicsbody.getBounds(); }
 
 bool Character::hasUnitCollision() { return physicsbody.hasUnitCollision(); }
 
+void Character::setUnitCollision(bool b) { physicsbody.setUnitCollision(b); }
+
 void Character::translate(int dx, int dy) { physicsbody.translate(dx, dy); }
 
 SDL_Point Character::location() { return physicsbody.location(); }
@@ -296,7 +297,7 @@ void Character::setYVelocity(int dy) {
             animationIndex = FALLING;
             animations.at(animationIndex).start();
         }
-        else if(physicsbody.getVelocity().dy() >= 1) {
+        else if(physicsbody.getVelocity().dy() >= 1 && animationIndex != JUMP) {
             animations.at(animationIndex).stop();
             animationIndex = JUMP;
             animations.at(animationIndex).start();

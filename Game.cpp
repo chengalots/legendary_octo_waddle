@@ -274,7 +274,7 @@ void Game::tick() {
         enemy->move();
     }
 
-        //do another collision check for player
+        //do collision check for player
     player->canMoveUp = canMove(UP, player, true);
     player->canMoveDown = canMove(DOWN, player, true);
     player->canMoveLeft = canMove(LEFT, player, true);
@@ -540,9 +540,9 @@ bool Game:: canMove(Direction direction, Character * character, bool isPlayer) {
                 }
             }
 
-            if(previousChunk != &chunks.at(i / Chunk::CHUNK_WIDTH).at(j / Chunk::CHUNK_HEIGHT)) {
+            if(character->hasUnitCollision() && previousChunk != &chunks.at(i / Chunk::CHUNK_WIDTH).at(j / Chunk::CHUNK_HEIGHT)) {
                 for(Character * character2 : chunks.at(i / Chunk::CHUNK_WIDTH).at(j / Chunk::CHUNK_HEIGHT).getCharsInChunk()) {
-                    if(character != character2 && testCollision(hitbox, character2->getBounds())) {
+                    if(character != character2 && character2->hasUnitCollision() && testCollision(hitbox, character2->getBounds())) {
                         switch(direction) {
                             case LEFT:
                                 if(hitbox.x > character2->getBounds().x && std::abs(hitbox.y - character2->getBounds().y) < character2->getBounds().h - 20) {

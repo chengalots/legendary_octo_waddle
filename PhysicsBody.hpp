@@ -35,7 +35,7 @@ public:
     int w();
     int h();
     bool hasUnitCollision();
-    void hasUnitCollision(bool b);
+    void setUnitCollision(bool b);
     SDL_Point location();
     void location(int x, int y);
     void translate(int dx, int dy);
