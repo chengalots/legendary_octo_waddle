@@ -10,11 +10,11 @@ images/Running3_1000x300.png
 12, 30
 true
 
-images/Jump_60x90.png
-0, 0, 60, 90
-0, 0, 60, 90
-1, 0
-true
+images/Jump2_1000x150.png
+0, 0, 1000, 150
+0, 0, 250, 150
+4, 200
+false
 
 images/Falling_60x90.png
 0, 0, 60, 90
@@ -37,7 +37,7 @@ false
 images/SwordAttack1_3_1200x480.png
 0, 0, 1200, 480
 0, 0, 300, 120
-16, 30
+16, 35
 false
 
 images/SwordRend5_1200x270.png
