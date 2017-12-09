@@ -16,11 +16,11 @@ images/Jump2_1000x150.png
 4, 200
 false
 
-images/Falling_60x90.png
-0, 0, 60, 90
-0, 0, 60, 90
-1, 0
-true
+images/Falling2_750x150.png
+0, 0, 750, 150
+0, 0, 250, 150
+3, 20
+false
 
 images/Roll_1200x360.png
 0, 0, 1200, 360

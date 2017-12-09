@@ -41,37 +41,29 @@ Character::~Character() {
 }
 
 void Character::render(SDL_Renderer *renderer) {
-
     if(!animations.at(animationIndex).isRunning()) {
-
         if(std::abs(physicsbody.getVelocity().dx()) < 1 && std::abs(physicsbody.getVelocity().dy()) < 1) {
-
             animationIndex = IDLE;
             animations.at(animationIndex).start();
         }
-        else if(physicsbody.getVelocity().dy() < -10) {
-
+        else if(physicsbody.getVelocity().dy() < -10 && animationIndex != FALLING) {
             animationIndex = FALLING;
             animations.at(animationIndex).start();
         }
     }
 
-    if(skillIndex >= 0 &&
-        animationIndex == skillIndex + SKILLS_START && animations.at(animationIndex).isRunning()) {
+    if(skillIndex >= 0 && animationIndex == skillIndex + SKILLS_START && animations.at(animationIndex).isRunning()) {
 
         if(animations.at(animationIndex).getCurrentFrame() == skills.at(skillIndex).velStartFrame) {
-
             if(physicsbody.getDirection() == LEFT) {
                 skillVelocity.setDx(skills.at(skillIndex).skillVelocity.dx());
             }
             else if(physicsbody.getDirection() == RIGHT) {
                 skillVelocity.setDx(-skills.at(skillIndex).skillVelocity.dx());
             }
-
             skillVelocity.setDy(skills.at(skillIndex).skillVelocity.dy());
         }
         else if(animations.at(animationIndex).getCurrentFrame() == skills.at(skillIndex).velEndFrame) {
-
             skillVelocity.setDx(0);
         }
     }
@@ -292,7 +284,7 @@ void Character::setYVelocity(int dy) {
     physicsbody.setYVelocity(dy);
 
     if(skillIndex <= 0 || !animations.at(skillIndex + SKILLS_START).isRunning()) {
-        if(physicsbody.getVelocity().dy() < -25) {
+        if(physicsbody.getVelocity().dy() < -25 && animationIndex != FALLING) {
             animations.at(animationIndex).stop();
             animationIndex = FALLING;
             animations.at(animationIndex).start();
