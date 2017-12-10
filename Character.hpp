@@ -21,7 +21,8 @@ public:
         IDLE = 0,
         RUNNING, //1
         JUMP, //2
-        FALLING, //3
+        DOUBLE_JUMP, //3
+        FALLING, //4
         SKILLS_START //end of regular animations, start of skill animations
     };
 

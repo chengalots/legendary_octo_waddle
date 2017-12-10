@@ -11,7 +11,7 @@
     //public constants
 const int Character::CHAR_W = 60;
 const int Character::CHAR_H = 90;
-const int Character::JUMP_VEL = 610;
+const int Character::JUMP_VEL = 620;
 const int Character::MAX_CHAR_VEL = 400;
 const int Character::CHAIN_TIME_LIMIT = 100;
 
@@ -289,10 +289,17 @@ void Character::setYVelocity(int dy) {
             animationIndex = FALLING;
             animations.at(animationIndex).start();
         }
-        else if(physicsbody.getVelocity().dy() >= 1 && animationIndex != JUMP) {
-            animations.at(animationIndex).stop();
-            animationIndex = JUMP;
-            animations.at(animationIndex).start();
+        else if(physicsbody.getVelocity().dy() >= 1) {
+            if(animationIndex != JUMP && jumpCounter == 0) {
+                animations.at(animationIndex).stop();
+                animationIndex = JUMP;
+                animations.at(animationIndex).start();
+            }
+            else if((!animations.at(DOUBLE_JUMP).isRunning() || animationIndex != DOUBLE_JUMP) && jumpCounter > 1) {
+                animations.at(animationIndex).stop();
+                animationIndex = DOUBLE_JUMP;
+                animations.at(animationIndex).start();
+            }
         }
         else if(std::abs(physicsbody.getVelocity().dy()) < 1 && animationIndex == FALLING) {
             animations.at(animationIndex).stop();

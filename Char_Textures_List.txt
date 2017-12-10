@@ -13,7 +13,13 @@ true
 images/Jump2_1000x150.png
 0, 0, 1000, 150
 0, 0, 250, 150
-4, 200
+4, 30
+false
+
+images/DoubleJump3_1500x360.png
+0, 0, 1500, 360
+0, 0, 250, 180
+8, 30
 false
 
 images/Falling2_750x150.png
@@ -37,7 +43,7 @@ false
 images/SwordAttack1_3_1200x480.png
 0, 0, 1200, 480
 0, 0, 300, 120
-16, 35
+16, 31
 false
 
 images/SwordRend5_1200x270.png

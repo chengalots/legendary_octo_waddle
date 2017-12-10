@@ -130,12 +130,6 @@ void Game::tick() {
                     case SDLK_d:
                         player->setXVelocity(0);
                         break;
-                    case SDLK_w:
-                        player->setYVelocity(0);
-                        break;
-                    case SDLK_s:
-                        player->setYVelocity(0);
-                        break;
                     case SDLK_LEFT:
                         if(!enemies.empty()) enemies.at(0)->setXVelocity(0); //these shouldn't be here but like...
                         break;
@@ -229,7 +223,7 @@ void Game::tick() {
     //-----------------------------
     double timeStep = loopTimer.getTicks() / 1000.0;
         //if the player is not on the ground
-    if(player->canMoveDown && player->getVelocity().dy() > -MAX_FALL_VEL && !currentKeyStates[SDL_SCANCODE_W]) {
+    if(player->canMoveDown && player->getVelocity().dy() > -MAX_FALL_VEL) {
             //apply gravity to velocity
         player->setYVelocity(player->getVelocity().dy() - (Y_ACCEL * timeStep));
             //cap falling speed
