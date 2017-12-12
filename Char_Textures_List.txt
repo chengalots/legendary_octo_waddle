@@ -76,10 +76,10 @@ images/AAAA_1800x540.png
 34, 40
 false
 
-images/SPINMOVE2_1500x700.png
-0, 0, 1500, 700
-0, 0, 250, 140
-30, 40
+images/SwordAttack2_1200x480.png
+0, 0, 1200, 480
+0, 0, 300, 120
+13, 25
 false
 
 images/RollAttackH_1500x960.png

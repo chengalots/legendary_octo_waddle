@@ -127,17 +127,9 @@ void Character::useSkill(int skill, Direction d) {
 
 Attack Character::getSkill() {
 
-    if(animations.at(animationIndex).getCurrentFrame() == previousFrame) {
-        return {};
-    }
-
-    if(skillIndex < 0) {
-        return {};
-    }
-
-    if(!animations.at(skillIndex + SKILLS_START).isRunning()) {
-        return {};
-    }
+    if(animations.at(animationIndex).getCurrentFrame() == previousFrame) return {};
+    if(skillIndex < 0) return {};
+    if(!animations.at(skillIndex + SKILLS_START).isRunning()) return {};
 
     Attack * s = &skills.at(skillIndex);
     Attack skill = {};

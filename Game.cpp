@@ -196,7 +196,7 @@ void Game::tick() {
     ///     Attack hitboxes     ///
     //-----------------------------
         //check if there's an attack and if it hits the target dummy
-    //Attack skill = player->getSkill();
+    Attack skill = player->getSkill();
 
     /*if(!skill.damageFrames.empty() && skill.damageFrames.at(0).damage > 0) {
         SDL_Rect bounds = enemy->getBounds();
