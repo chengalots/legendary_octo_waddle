@@ -55,24 +55,31 @@ void Player::useSkill(AttackType t, Direction d) {
         if(animations.at(skillIndex + SKILLS_START).isRunning()
             && skills.at(skillIndex).hasAnimationLock
             && !chainTimer.isRunning()) return;
+        nextSkill = (int)END;
         Character::useSkill(ROLL, d);
         return;
     }
     if(chainTimer.isRunning()) {
         if(t == LIGHT) {
-            if(skills.at(skillIndex).skillChains[0] >= 0)
+            if(skills.at(skillIndex).skillChains[0] >= 0) {
+                nextSkill = (int)END;
                 Character::useSkill(skills.at(skillIndex).skillChains[0], d);
+            }
         }
         else if(t == HEAVY) {
-            if(skills.at(skillIndex).skillChains[0] >= 0)
+            if(skills.at(skillIndex).skillChains[0] >= 0) {
+                nextSkill = (int)END;
                 Character::useSkill(skills.at(skillIndex).skillChains[1], d);
+            }
         }
     }
     else if(!animations.at(skillIndex + SKILLS_START).isRunning()) {
         if(t == LIGHT) {
+            nextSkill = (int)END;
             Character::useSkill(OHS, d);
         }
         else if(t == HEAVY) {
+            nextSkill = (int)END;
             Character::useSkill(HEARTTHRUST, d);
         }
     }
