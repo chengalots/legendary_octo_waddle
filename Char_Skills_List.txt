@@ -32,7 +32,7 @@ false
 0                            # debuff effect duration (STAGGER just puts you in animation lock)
 4                            # buff effect
 10000                        # buff effect duration (reset chance since respective buff is CD_CHANCE_RESET)
-14, 16                         # chain frames interval
+13, 16                         # chain frames interval
 8, 5                         # skill chains
 0                         # cooldown in ms
 400, 0                     # skill velocity
@@ -116,7 +116,7 @@ true
 0                           # debuff durations
 4                           # buff effect
 10000                       # buff duration
-12, 13                      # chain frames interval
+11, 13                      # chain frames interval
 4, 5                        # skill chains
 0
 300, 0                      # skill velocity
