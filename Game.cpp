@@ -419,8 +419,7 @@ void Game::render() {
             if(testCollision(camera, chunks.at(i).at(j).getBounds())) {
                     //render the enemies in the visible chunks
                 for(Character *character : chunks.at(i).at(j).getCharsInChunk()) {
-                    if(character == player) ((Player *)character)->render(renderer);
-                    else ((Enemy *)character)->render(renderer);
+                    if(character != player) ((Enemy *)character)->render(renderer);
                 }
             }
         }
@@ -429,7 +428,7 @@ void Game::render() {
     //SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0, 0xFF);
             //---------------------
             ///     Player      ///
-    //player->render(renderer);
+    player->render(renderer);
 
         //draw everything
     SDL_RenderPresent(renderer);

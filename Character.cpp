@@ -13,7 +13,7 @@ const int Character::CHAR_W = 60;
 const int Character::CHAR_H = 90;
 const int Character::JUMP_VEL = 620;
 const int Character::MAX_CHAR_VEL = 450;
-const int Character::CHAIN_TIME_LIMIT = 100;
+const int Character::CHAIN_TIME_LIMIT = 250;
 
 Character::Character(Timer * newTimer, SDL_Point spawnPoint, Size size) {
 
