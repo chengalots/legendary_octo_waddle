@@ -116,7 +116,7 @@ true
 0                           # debuff durations
 4                           # buff effect
 10000                       # buff duration
-17, 17                      # chain frames interval
+12, 13                      # chain frames interval
 4, 5                        # skill chains
 0
 300, 0                      # skill velocity
