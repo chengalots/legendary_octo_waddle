@@ -54,6 +54,7 @@ public:
 
     Character(Timer * newTimer, SDL_Point spawnPoint, Size size);
     ~Character();
+    void update();
     void render(SDL_Renderer * renderer);
 
         //use a skill listed in the Skills enum

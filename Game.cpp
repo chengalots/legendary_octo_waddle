@@ -146,6 +146,22 @@ void Game::tick() {
                         break;
                 }
                 break;
+            case SDL_MOUSEBUTTONDOWN:
+                if(event.button.button == SDL_BUTTON_LEFT) {
+                    Direction d;// = NONE;
+                    if(currentKeyStates[SDL_SCANCODE_A] && !currentKeyStates[SDL_SCANCODE_D]) d = LEFT;
+                    else if(currentKeyStates[SDL_SCANCODE_D] && !currentKeyStates[SDL_SCANCODE_A]) d = RIGHT;
+                    else d = NONE;
+                    player->useSkill(Player::LIGHT, d);
+                }
+                else if(event.button.button == SDL_BUTTON_RIGHT) {
+                    Direction d;
+                    if(currentKeyStates[SDL_SCANCODE_A] && !currentKeyStates[SDL_SCANCODE_D]) d = LEFT;
+                    else if(currentKeyStates[SDL_SCANCODE_D] && !currentKeyStates[SDL_SCANCODE_A]) d = RIGHT;
+                    else d = NONE;
+                    player->useSkill(Player::HEAVY, d);
+                }
+                break;
             default:
                 break;
         }
@@ -258,7 +274,7 @@ void Game::tick() {
     }
 
         //move the target dummy
-    for(Character *enemy : enemies) {
+    for(Enemy *enemy : enemies) {
         if(std::abs(enemy->getVelocity().dx()) >= 1) {
             if(std::abs(enemy->getVelocity().dx() + player->getVelocity().dx()) < 1) {
                 enemy->setXVelocity(enemy->getVelocity().dx() + player->getVelocity().dx(), true);
@@ -276,6 +292,11 @@ void Game::tick() {
 
         //restart the frame timer after everything has been moved
     loopTimer.start();
+
+    for(Enemy *enemy : enemies) {
+        enemy->update();
+    }
+    player->update();
 
     render();
 }
@@ -334,7 +355,7 @@ void Game::processKeyPresses() {
             ///      1 key      ///
 
     if(currentKeyStates[SDL_SCANCODE_1]) {
-        Direction d = NONE;
+        Direction d;
         if(currentKeyStates[SDL_SCANCODE_A] && !currentKeyStates[SDL_SCANCODE_D]) d = LEFT;
         else if(currentKeyStates[SDL_SCANCODE_D] && !currentKeyStates[SDL_SCANCODE_A]) d = RIGHT;
         else d = NONE;
@@ -344,7 +365,7 @@ void Game::processKeyPresses() {
             ///      2 key      ///
 
     else if(currentKeyStates[SDL_SCANCODE_2]) {
-        Direction d = NONE;
+        Direction d;
         if(currentKeyStates[SDL_SCANCODE_A] && !currentKeyStates[SDL_SCANCODE_D]) d = LEFT;
         else if(currentKeyStates[SDL_SCANCODE_D] && !currentKeyStates[SDL_SCANCODE_A]) d = RIGHT;
         else d = NONE;
@@ -352,8 +373,8 @@ void Game::processKeyPresses() {
     }
             //---------------------
             ///      C key      ///
-    else if(currentKeyStates[SDL_SCANCODE_C]) {
-        Direction d = NONE;
+    if(currentKeyStates[SDL_SCANCODE_C]) {
+        Direction d;
         if(currentKeyStates[SDL_SCANCODE_A] && !currentKeyStates[SDL_SCANCODE_D]) d = LEFT;
         else if(currentKeyStates[SDL_SCANCODE_D] && !currentKeyStates[SDL_SCANCODE_A]) d = RIGHT;
         else d = NONE;

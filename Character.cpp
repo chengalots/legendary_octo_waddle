@@ -13,7 +13,7 @@ const int Character::CHAR_W = 60;
 const int Character::CHAR_H = 90;
 const int Character::JUMP_VEL = 620;
 const int Character::MAX_CHAR_VEL = 450;
-const int Character::CHAIN_TIME_LIMIT = 250;
+const int Character::CHAIN_TIME_LIMIT = 300;
 
 Character::Character(Timer * newTimer, SDL_Point spawnPoint, Size size) {
 
@@ -40,7 +40,7 @@ Character::~Character() {
     timer = nullptr;
 }
 
-void Character::render(SDL_Renderer *renderer) {
+void Character::update() {
     if(!animations.at(animationIndex).isRunning()) {
         if(std::abs(physicsbody.getVelocity().dx()) < 1 && std::abs(physicsbody.getVelocity().dy()) < 1) {
             animationIndex = IDLE;
@@ -69,6 +69,9 @@ void Character::render(SDL_Renderer *renderer) {
     }
 
     if(chainTimer.getTicks() > CHAIN_TIME_LIMIT) chainTimer.stop();
+}
+
+void Character::render(SDL_Renderer *renderer) {
 
     SDL_RendererFlip flip;
 
@@ -102,16 +105,12 @@ void Character::render(SDL_Renderer *renderer) {
 }
 
 void Character::useSkill(int skill, Direction d) {
-
-    if(skill < 0) {
-        return;
-    }
+    if(skill < 0) return;
 
     if(d != NONE) physicsbody.setDirection(d);
 
-    animations.at(animationIndex).stop();
-
     if(timer->getTicks() - skills.at(skill).coolDownStartTicks >= (unsigned int)skills.at(skill).coolDown) {
+        animations.at(animationIndex).stop();
         skillIndex = skill;
         animationIndex = skill + (int)SKILLS_START;
         animations.at(animationIndex).setSpeed(1.0);
