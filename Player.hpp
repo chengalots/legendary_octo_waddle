@@ -38,13 +38,14 @@ public:
     static const int NUM_OF_TEXTURES;
 
     Player(SDL_Renderer * renderer, Timer * newTimer, SDL_Point spawnPoint);
+    void update();
 
     void setXVelocity(int dx);
     void move();
     void useSkill(AttackType t, Direction d);
 
 private:
-
+    int nextSkill;
 };
 
 #endif
