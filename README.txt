@@ -14,6 +14,9 @@ Dependencies:
   (good lord please save my dying soul) and I was told that installing/including the libraries is a bit different on MacOs??? I don't
   really know.
 
-It feels like such a mess right now. I was in the process of updating the animations and making attacks that flowed better but I didn't feel like I was making any actual progress on the game itself. Making animations takes up a lot of time and effort that I think could be put to better use implementing game mechanics. Eventually I will get around to it, just like how I will eventually get around to creating a story. SoonTM.
+It feels like such a mess right now. I was in the process of updating the animations and making attacks that flowed better but I didn't
+feel like I was making any actual progress on the game itself. Making animations takes up a lot of time and effort that I think could be
+put to better use implementing game mechanics. Eventually I will get around to it, just like how I will eventually get around to creating
+a story. SoonTM.
 
 Kevin Cheng
