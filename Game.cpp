@@ -114,7 +114,6 @@ void Game::tick() {
                     case SDLK_SPACE:
                         //player jumping and double jumping
                         if(player->canMoveUp && player->getJumpCounter() < player->jumpCap) {
-                            player->setYVelocity(Character::JUMP_VEL);
                             player->jump();
                         }
                         break;
@@ -245,7 +244,7 @@ void Game::tick() {
             //cap falling speed
         if(player->getVelocity().dy() < -MAX_FALL_VEL) player->setYVelocity(-MAX_FALL_VEL);
             //if character walks off an edge, count it as a jump
-        if(player->getJumpCounter() == 0) player->jump();
+        if(player->getJumpCounter() == 0) player->incrementJumpCounter();
     }
 
         //apply gravity for target dummy
@@ -273,6 +272,10 @@ void Game::tick() {
         translateChunks(0, player->getVelocity().dy() * timeStep);
     }
 
+
+        //restart the frame timer after everything has been moved
+    loopTimer.start();
+
         //move the target dummy
     for(Enemy *enemy : enemies) {
         if(std::abs(enemy->getVelocity().dx()) >= 1) {
@@ -289,9 +292,6 @@ void Game::tick() {
     player->canMoveDown = canMove(DOWN, player, true);
     player->canMoveLeft = canMove(LEFT, player, true);
     player->canMoveRight = canMove(RIGHT, player, true);
-
-        //restart the frame timer after everything has been moved
-    loopTimer.start();
 
     for(Enemy *enemy : enemies) {
         enemy->update();

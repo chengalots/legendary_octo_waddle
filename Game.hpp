@@ -12,13 +12,9 @@
 #include <fstream>
 #include <string>
 #include <vector>
-//#include "Size.hpp"
-//#include "Timer.hpp"
-//#include "Animation.hpp"
-#include "Player.hpp" //Character.hpp already includes previous 3 .hpp files
+#include "Player.hpp"
 #include "Enemy.hpp"
 #include "Chunk.hpp"
-//#include "SkillTray.hpp"
 
 class Game {
 public:

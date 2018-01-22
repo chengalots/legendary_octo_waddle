@@ -208,7 +208,12 @@ void Character::setDirection(Direction d) {
     physicsbody.setDirection(d);
 }
 
-void Character::jump() { jumpCounter++; }
+void Character::jump() {
+    jumpCounter++;
+    setYVelocity(JUMP_VEL);
+}
+
+void Character::incrementJumpCounter() { jumpCounter++; }
 
 void Character::resetJumpCounter() { jumpCounter = 0; }
 

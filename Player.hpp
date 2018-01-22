@@ -45,7 +45,7 @@ public:
     void useSkill(AttackType t, Direction d);
 
 private:
-    int nextSkill;
+    //int nextSkill;
 };
 
 #endif

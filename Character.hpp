@@ -75,6 +75,7 @@ public:
 
         //increments jumpCounter
     void jump();
+    void incrementJumpCounter();
     void resetJumpCounter();
     int getJumpCounter();
     void setJumpCounter(int j);
