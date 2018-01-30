@@ -1,5 +1,5 @@
 CXX=g++
-CXXFLAGS= -std=c++14 -pedantic -Wall -Wextra
+CXXFLAGS= -std=c++14 -pedantic -Wall -Wextra -g -O0
 LDLIBS=-lsdl2 -lsdl2_image -lsdl2_ttf
 
 all: gameExecutable
