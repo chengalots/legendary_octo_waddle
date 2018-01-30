@@ -8,11 +8,14 @@
 
 #include "Enemy.hpp"
 
+const int Enemy::FOLLOW_SPEED = Character::MAX_CHAR_VEL * 3 / 4;
+
 Enemy::Enemy(SDL_Renderer *renderer, Timer *_timer, SDL_Rect _hitbox, Size size) :
     Character(_timer, {_hitbox.x, _hitbox.y}, size) {
 
     timer = _timer;
-    //physicsbody = PhysicsBody(_hitbox, _timer);
+
+    followRange = 500;
 
     textures = {14, Texture()};
     skills = std::vector<Attack>(10);
@@ -33,40 +36,24 @@ Enemy::~Enemy() {
 
 void Enemy::render(SDL_Renderer *renderer) {
     Character::render(renderer);
-    //SDL_Rect bounds = Character::getBounds();
-    //SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0, 0xFF);
-    //SDL_RenderDrawRect(renderer, &bounds);
 }
 
-/*void Enemy::move() { physicsbody.move(); }
+void Enemy::simpleFollowCharacter(Character* character) {
+    if(character->location().x - getBounds().w * 2 > location().x
+    ||location().x > character->location().x + character->getBounds().w + getBounds().w * 2) {
+        if(character->location().x > location().x + getBounds().w * 2) {
+            setDirection(RIGHT);
+            setXVelocity(FOLLOW_SPEED);
+        }
+        else if(character->location().x + character->getBounds().w < location().x) {
+            setDirection(LEFT);
+            setXVelocity(-FOLLOW_SPEED);
+        }
+    }
+    else {
+        setXVelocity(0);
+    }
+}
 
-void Enemy::removeBuffEffect(StatusEffect::BuffEffect type) { physicsbody.removeBuffEffect(type); }
-
-bool Enemy::hasBuffEffect(StatusEffect::BuffEffect type) { return physicsbody.hasBuffEffect(type); }
-
-std::unordered_map<StatusEffect::BuffEffect, StatusEffect> Enemy::getBuffEffectsReceived()
-{ return physicsbody.getBuffEffectsReceived(); }
-
-void Enemy::removeDebuffEffect(StatusEffect::DebuffEffect type) { physicsbody.removeDebuffEffect(type); }
-
-void Enemy::receiveStatusEffect(StatusEffect effect) { physicsbody.receiveStatusEffect(effect); }
-
-bool Enemy::hasDebuffEffect(StatusEffect::DebuffEffect type) { return physicsbody.hasDebuffEffect(type); }
-
-std::unordered_map<StatusEffect::DebuffEffect, StatusEffect> Enemy::getDebuffEffectsReceived()
-{ return physicsbody.getDebuffEffectsReceived(); }
-
-//SDL_Rect * Enemy::getBounds() { return physicsbody.getBounds(); }
-
-mVector Enemy::getVelocity() { return physicsbody.getVelocity(); }
-
-void Enemy::setTimer(Timer *newTimer) {
-    timer = newTimer;
-    physicsbody.setTimer(newTimer);
- }
-
-void Enemy::setVelocity(int dx, int dy) { physicsbody.setVelocity(dx, dy); }
-
-void Enemy::setXVelocity(int dx) { physicsbody.setXVelocity(dx); }
-
-void Enemy::setYVelocity(int dy) { physicsbody.setYVelocity(dy); }*/
+int Enemy::getFollowRange() { return followRange; }
+void Enemy::setFollowRange(int newRange) { followRange = newRange; }

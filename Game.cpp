@@ -40,7 +40,7 @@ Game::Game(SDL_Renderer * _renderer, Size windowSize) {
     if(!tileTexture.loadFromFile(renderer, "images/tiles2.png")) run = false;
 
         //read the map info from file and set the tile types accordingly
-    std::ifstream fileIn("maps/map1.txt");
+    std::ifstream fileIn("maps/map2.txt");
         //check if the file openned
     if(fileIn) {
         //for storing the dimensions of the chunks std::vector
@@ -278,7 +278,15 @@ void Game::tick() {
 
         //move the target dummy
     for(Enemy *enemy : enemies) {
+        if(mVector(player->getBounds().x - enemy->getBounds().x, player->getBounds().y - enemy->getBounds().y, false).magnitude() < enemy->getFollowRange()) {
+            enemy->simpleFollowCharacter(player);
+        }
+        else {
+            enemy->setXVelocity(0);
+        }
+
         if(std::abs(enemy->getVelocity().dx()) >= 1) {
+                //correct for camera movement
             if(std::abs(enemy->getVelocity().dx() + player->getVelocity().dx()) < 1) {
                 enemy->setXVelocity(enemy->getVelocity().dx() + player->getVelocity().dx(), true);
             }
