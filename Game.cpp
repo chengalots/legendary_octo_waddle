@@ -568,22 +568,22 @@ bool Game:: canMove(Direction direction, Character * character, bool isPlayer) {
                     if(character != character2 && character2->hasUnitCollision() && testCollision(hitbox, character2->getBounds())) {
                         switch(direction) {
                             case LEFT:
-                                if(hitbox.x > character2->getBounds().x && std::abs(hitbox.y - character2->getBounds().y) < character2->getBounds().h - 20) {
+                                if(hitbox.x > character2->getBounds().x && std::abs(hitbox.y - character2->getBounds().y) < character2->getBounds().h - zipCorrection) {
                                     return false;
                                 }
                                 break;
                             case RIGHT:
-                                if(hitbox.x < character2->getBounds().x && std::abs(hitbox.y - character2->getBounds().y) < character2->getBounds().h - 20) {
+                                if(hitbox.x < character2->getBounds().x && std::abs(hitbox.y - character2->getBounds().y) < character2->getBounds().h - zipCorrection) {
                                     return false;
                                 }
                                 break;
                             case UP:
-                                if(hitbox.y > character2->getBounds().y && std::abs(hitbox.x - character2->getBounds().x) < character2->getBounds().w - 20) {
+                                if(hitbox.y > character2->getBounds().y && std::abs(hitbox.x - character2->getBounds().x) < character2->getBounds().w - zipCorrection) {
                                     return false;
                                 }
                                 break;
                             case DOWN:
-                                if(hitbox.y < character2->getBounds().y && std::abs(hitbox.x - character2->getBounds().x) < character2->getBounds().w - 20) {
+                                if(hitbox.y < character2->getBounds().y && std::abs(hitbox.x - character2->getBounds().x) < character2->getBounds().w - zipCorrection) {
                                     return false;
                                 }
                                 break;
