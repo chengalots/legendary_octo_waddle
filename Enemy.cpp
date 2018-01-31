@@ -38,7 +38,7 @@ void Enemy::render(SDL_Renderer *renderer) {
 }
 
 void Enemy::simpleFollowCharacter(Character* character) {
-    if(character->location().x - getBounds().w * 2 > location().x
+    if(character->location().x - getBounds().w * 3 > location().x
     ||location().x > character->location().x + character->getBounds().w + getBounds().w * 2) {
         if(character->location().x > location().x + getBounds().w * 2) {
             setDirection(RIGHT);
@@ -51,6 +51,12 @@ void Enemy::simpleFollowCharacter(Character* character) {
     }
     else {
         setXVelocity(0);
+        if(character->location().x > location().x) {
+            setDirection(RIGHT);
+        }
+        else {
+            setDirection(LEFT);
+        }
     }
 }
 

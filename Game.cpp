@@ -448,8 +448,8 @@ void Game::render() {
             if(testCollision(camera, chunks.at(i).at(j).getBounds())) {
                     //render the enemies in the visible chunks
                 for(Character *character : chunks.at(i).at(j).getCharsInChunk()) {
-                    //if(character != player) ((Enemy *)character)->render(renderer);
-                    character->render(renderer);
+                    if(character != player) ((Enemy *)character)->render(renderer);
+                    //character->render(renderer); // comment out if you want player to be rendered on top
                 }
             }
         }
@@ -458,7 +458,7 @@ void Game::render() {
     //SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0, 0xFF);
             //---------------------
             ///     Player      ///
-    //player->render(renderer);
+    player->render(renderer);
 
         //draw everything
     SDL_RenderPresent(renderer);
@@ -493,7 +493,7 @@ void Game::updateCollisionGrid() {
 }
 
 bool Game:: canMove(Direction direction, Character * character, bool isPlayer) {
-    double zipCorrection = 0.25;
+    double zipCorrection = 20;
     SDL_Rect hitbox = character->getBounds();
     SDL_Point startTile = absoluteTileLocation({hitbox.x, hitbox.y});
     Chunk * previousChunk = nullptr;
@@ -512,7 +512,7 @@ bool Game:: canMove(Direction direction, Character * character, bool isPlayer) {
                     case LEFT:
                         if(Tile::rightWalls.count(tile.getType()) == 0) break;
                         if(tile.getBounds().x + Tile::TILE_WIDTH
-                            - (Tile::TILE_WIDTH * zipCorrection) > hitbox.x) break;
+                            - (/*Tile::TILE_WIDTH * */zipCorrection) > hitbox.x) break;
                         if(tile.getBounds().y + 1 >= hitbox.y + hitbox.h ||
                             tile.getBounds(). y + tile.getBounds().w - 1 <= hitbox.y) break;
 
@@ -521,7 +521,7 @@ bool Game:: canMove(Direction direction, Character * character, bool isPlayer) {
                         break;
                     case RIGHT:
                         if(Tile::leftWalls.count(tile.getType()) == 0) break;
-                        if(tile.getBounds().x + (Tile::TILE_WIDTH * zipCorrection)
+                        if(tile.getBounds().x + (/*Tile::TILE_WIDTH * */zipCorrection)
                             < hitbox.x + hitbox.w) break;
                         if(tile.getBounds().y + 1 >= hitbox.y + hitbox.h ||
                             tile.getBounds(). y + tile.getBounds().w - 1 <= hitbox.y) break;
@@ -532,7 +532,7 @@ bool Game:: canMove(Direction direction, Character * character, bool isPlayer) {
                     case UP:
                         if(Tile::bottomWalls.count(tile.getType()) == 0) break;
                         if(tile.getBounds().y + Tile::TILE_HEIGHT
-                            - (Tile::TILE_HEIGHT * zipCorrection) > hitbox.y) break;
+                            - (/*Tile::TILE_HEIGHT * */zipCorrection) > hitbox.y) break;
                         if(tile.getBounds().x + tile.getBounds().w - 1 <= hitbox.x ||
                             tile.getBounds().x + 1 >= hitbox.x + hitbox.w) break;
 
@@ -541,7 +541,7 @@ bool Game:: canMove(Direction direction, Character * character, bool isPlayer) {
                         break;
                     case DOWN:
                         if(Tile::topWalls.count(tile.getType()) == 0) break;
-                        if(tile.getBounds().y + (Tile::TILE_HEIGHT * zipCorrection)
+                        if(tile.getBounds().y + (/*Tile::TILE_HEIGHT * */zipCorrection)
                             < hitbox.y + hitbox.h) break;
                         if(tile.getBounds().x + tile.getBounds().w - 1 <= hitbox.x ||
                             tile.getBounds().x + 1 >= hitbox.x + hitbox.w) break;
