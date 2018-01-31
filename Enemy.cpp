@@ -17,14 +17,13 @@ Enemy::Enemy(SDL_Renderer *renderer, Timer *_timer, SDL_Rect _hitbox, Size size)
 
     followRange = 500;
 
-    textures = {14, Texture()};
     skills = std::vector<Attack>(10);
 
     Loader loader;
-    loader.loadAnimations(renderer, &textures, &animations, Loader::ENEMY);
+    loader.loadAnimations(renderer, &animations, 14, Loader::ENEMY);
 
     for(unsigned int i = 0; i < animations.size(); i++) {
-        animations.at(i).setTimer(timer);
+        animations.at(i)->setTimer(timer);
     }
 
     loader.loadSkills(&skills, Loader::ENEMY);

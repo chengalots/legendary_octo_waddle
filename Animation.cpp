@@ -10,36 +10,27 @@
 
 const std::string Animation::NO_FILE_PATH = "-No file path provided-";
 
-Animation::Animation(Texture *texture, SDL_Rect sheetBounds, SDL_Rect frameRect,
+Animation::Animation(std::string path, SDL_Renderer * renderer, SDL_Rect sheetBounds, SDL_Rect frameRect,
     int _totalFrames, double _fps, bool _loop) {
 
-    spriteSheet = texture;
+    spriteSheet = new Texture();
     timer = nullptr;
     frameBounds = {sheetBounds.x, sheetBounds.y, frameRect.w, frameRect.h};
     startTicks = pausedTicks = 0;
     _isRunning = _isPaused = false;
-    name = NO_FILE_PATH;
     totalFrames = _totalFrames;
     currentFrame = 0;
     fps = _fps;
     speed = 1.0;
     loop = _loop;
     spriteSheetBounds = {sheetBounds.x, sheetBounds.y, sheetBounds.w, sheetBounds.h};
+
+    spriteSheet->loadFromFile(renderer, path);
 }
 
 Animation::~Animation() {
-
     timer = nullptr;
-
-    if(name == NO_FILE_PATH) {
-        spriteSheet = nullptr;
-        //printf("Animation [%p] spritesheet set to nullptr\n", this);
-    }
-    else {
-        delete spriteSheet;
-        //printf("Animation [%p] spritesheet deleted", this);
-    }
-    //printf("Animation deinit [%s] | [%p]\n", name.c_str(), this);
+    delete spriteSheet;
 }
 
 void Animation::render(SDL_Renderer *renderer, int x, int y, SDL_RendererFlip flip) {
@@ -52,19 +43,17 @@ void Animation::render(SDL_Renderer *renderer, int x, int y, SDL_RendererFlip fl
     }
 
     if(fps > 0 && !_isPaused && (double)(timer->getTicks() - startTicks) >= 1000.0/(fps * speed)) {
-        if(name == NO_FILE_PATH) {
-            frameBounds.x += frameBounds.w;
-            currentFrame++;
+        frameBounds.x += frameBounds.w;
+        currentFrame++;
 
-            if(loop && currentFrame >= totalFrames) {
-                frameBounds.x = spriteSheetBounds.x;
-                frameBounds.y = spriteSheetBounds.y;
-                currentFrame = 0;
-            }
-            else if(frameBounds.x >= spriteSheetBounds.w + spriteSheetBounds.x) {
-                frameBounds.x = spriteSheetBounds.x;
-                frameBounds.y += frameBounds.h;
-            }
+        if(loop && currentFrame >= totalFrames) {
+            frameBounds.x = spriteSheetBounds.x;
+            frameBounds.y = spriteSheetBounds.y;
+            currentFrame = 0;
+        }
+        else if(frameBounds.x >= spriteSheetBounds.w + spriteSheetBounds.x) {
+            frameBounds.x = spriteSheetBounds.x;
+            frameBounds.y += frameBounds.h;
         }
 
         startTicks = timer->getTicks();
@@ -76,9 +65,7 @@ void Animation::render(SDL_Renderer *renderer, int x, int y, SDL_RendererFlip fl
 }
 
 bool Animation::loadFromFile(SDL_Renderer *renderer, std::string path, double _fps) {
-
     fps = _fps;
-    name = path;
     return spriteSheet->loadFromFile(renderer, path);
 }
 
@@ -88,8 +75,6 @@ Size Animation::getFrameSize() { return {frameBounds.w, frameBounds.h}; }
 
 SDL_Rect Animation::getFrameBounds() { return frameBounds; }
 
-std::string Animation::getName() { return name; }
-
 bool Animation::doesLoop() { return loop; }
 
 bool Animation::isPaused() { return _isPaused; }
@@ -98,8 +83,6 @@ bool Animation::isRunning() { return _isRunning; }
 
 void Animation::setFrameBounds(SDL_Rect newBounds) { frameBounds = {newBounds.x,
     newBounds.y, newBounds.w, newBounds.h}; }
-
-void Animation::setName(std::string newName) { name = newName; }
 
 void Animation::setSpeed(double newSpeed) { speed = newSpeed; }
 

@@ -37,10 +37,8 @@ public:
 
     static const int CHAIN_TIME_LIMIT;
 
-        //holds the textures for animations
-    std::vector<Texture> textures;
         //contains all available animations in AnimationIndex and Skills enums
-    std::vector<Animation> animations;
+    std::vector<Animation *> animations;
         //contains all available skills in Skills enum
     std::vector<Attack> skills;
 

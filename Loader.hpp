@@ -27,14 +27,11 @@ public:
     };
 
     Loader();
-    void loadAnimations(SDL_Renderer * renderer, std::vector<Texture> * textures
-                        , std::vector<Animation> * animations, LoadType type);
+    void loadAnimations(SDL_Renderer * renderer, std::vector<Animation *> * animations, int numOfAnimations, LoadType type);
     void loadSkills(std::vector<Attack> * skills, LoadType type);
 
 private:
-    void loadCharAnimations(SDL_Renderer * renderer,
-                            std::vector<Texture> * textures,
-                            std::vector<Animation> * animations);
+    void loadCharAnimations(SDL_Renderer * renderer, std::vector<Animation *> * animations, int numOfAnimations);
     void loadCharSkills(std::vector<Attack> * skills);
 
     std::ifstream fileIn;

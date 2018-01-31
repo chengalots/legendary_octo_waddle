@@ -16,7 +16,7 @@
 
 class Animation {
 public:
-    Animation(Texture *texture, SDL_Rect sheetBounds, SDL_Rect frameRect,
+    Animation(std::string path, SDL_Renderer * renderer, SDL_Rect sheetBounds, SDL_Rect frameRect,
               int _totalFrames, double _fps = 0, bool _loop = true);
     ~Animation();
     void render(SDL_Renderer *renderer, int x, int y,
@@ -25,12 +25,10 @@ public:
     int getCurrentFrame();
     SDL_Rect getFrameBounds();
     Size getFrameSize();
-    std::string getName();
     bool doesLoop();
     bool isPaused();
     bool isRunning();
     void setFrameBounds(SDL_Rect newBounds);
-    void setName(std::string newName);
     void setSpeed(double newSpeed);
     void setTimer(Timer *newTimer);
     void start();
@@ -45,7 +43,6 @@ private:
     SDL_Rect spriteSheetBounds;
     Timer *timer;
     SDL_Rect frameBounds;
-    std::string name;
 
     Uint32 startTicks, pausedTicks;
 

@@ -10,15 +10,14 @@
 
 Loader::Loader() { }
 
-void Loader::loadAnimations(SDL_Renderer * renderer, std::vector<Texture> * textures,
-    std::vector<Animation> * animations, LoadType type) {
+void Loader::loadAnimations(SDL_Renderer * renderer, std::vector<Animation *> * animations, int numOfAnimations, LoadType type) {
 
     switch (type) {
         case PLAYER:
-            loadCharAnimations(renderer, textures, animations);
+            loadCharAnimations(renderer, animations, numOfAnimations);
             break;
         case ENEMY:
-            loadCharAnimations(renderer, textures, animations);
+            loadCharAnimations(renderer, animations, numOfAnimations);
             break;
         default:
             break;
@@ -38,8 +37,7 @@ void Loader::loadSkills(std::vector<Attack> * skills, LoadType type) {
     }
 }
 
-void Loader::loadCharAnimations(SDL_Renderer * renderer, std::vector<Texture> * textures,
-    std::vector<Animation> * animations) {
+void Loader::loadCharAnimations(SDL_Renderer * renderer, std::vector<Animation *> * animations, int numOfAnimations) {
 
     if(fileIn.is_open()) fileIn.close();
 
@@ -57,10 +55,10 @@ void Loader::loadCharAnimations(SDL_Renderer * renderer, std::vector<Texture> * 
     int totalFrames, fps;
     bool loop = false;
 
-    for(unsigned int i = 0; i < textures->size(); i++) {
+    for(int i = 0; i < numOfAnimations; i++) {
 
         std::getline(fileIn, input);
-        textures->at(i).loadFromFile(renderer, input);
+        std::string path = input;
 
         std::getline(fileIn, input);
 
@@ -79,7 +77,7 @@ void Loader::loadCharAnimations(SDL_Renderer * renderer, std::vector<Texture> * 
             if(input == "true") loop = true;
             else if(input == "false") loop = false;
 
-            animations->push_back(Animation(&textures->at(i), sheetBounds, frameRect, totalFrames, fps, loop));
+            animations->push_back(new Animation(path, renderer, sheetBounds, frameRect, totalFrames, fps, loop));
 
             std::getline(fileIn, input);
 

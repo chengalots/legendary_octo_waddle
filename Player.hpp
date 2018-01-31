@@ -35,7 +35,7 @@ public:
 
     static const int width, height;
     static const int SKILLSET_SIZE;
-    static const int NUM_OF_TEXTURES;
+    static const int NUM_OF_ANIMATIONS;
 
     Player(SDL_Renderer * renderer, Timer * newTimer, SDL_Point spawnPoint);
     void update();
@@ -45,7 +45,6 @@ public:
     void useSkill(AttackType t, Direction d);
 
 private:
-    //int nextSkill;
 };
 
 #endif
